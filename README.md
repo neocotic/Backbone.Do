@@ -30,7 +30,7 @@ https://github.com/neocotic/Backbone.Do/issues
 
 Take a look at `docs/*` to get a better understanding of what the code is doing.
 
-If that doesn't help, feel free to follow me on Twitter, @neocotic.
+If that doesn't help, feel free to follow me on Twitter, [@neocotic][].
 
 However, if you want more information or examples of using this library please visit the project's
 homepage;
