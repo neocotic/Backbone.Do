@@ -1,0 +1,9 @@
+{
+  "name": "Backbone.Do",
+  "version": "0.1.0",
+  "main": "backbone.do.js",
+  "dependencies": {
+    "underscore": "~1.4.4",
+    "backbone": "~1.0.0"
+  }
+}
