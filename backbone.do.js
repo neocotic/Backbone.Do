@@ -63,6 +63,11 @@
   };
 
   // TODO: Document
+  Do.parseName = function(name) {
+    return name;
+  };
+
+  // TODO: Document
   Do.perform = function(model, action, name, options) {
     options = _.extend({}, action.options, options);
 
@@ -77,9 +82,7 @@
       model.attributes = attributes;
 
       var serverAttrs = model.parse(resp, options);
-      if (_(serverAttrs).isObject() && !model.set(serverAttrs, options)) {
-        return false;
-      }
+      if (_(serverAttrs).isObject() && !model.set(serverAttrs, options)) return false;
 
       if (success) success(model, resp, options);
       model.trigger('action:' + name, model, resp, options);
@@ -102,7 +105,7 @@
     }
 
     var base = _(model).result('url'),
-        path = _(action).result('url') || name,
+        path = _(action).result('url') || this.parseName(name),
         separator = base[base.length - 1] === '/' ? '' : '/';
     options.url = base + separator + encodeURIComponent(path);
   };
