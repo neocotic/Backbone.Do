@@ -8,6 +8,8 @@
 
 [Backbone.Do][] is a plugin to make model actions doable.
 
+[![Build Status](https://secure.travis-ci.org/neocotic/Backbone.Do.png)](http://travis-ci.org/neocotic/Backbone.Do)
+
 ## Install
 
 Install using the package manager for your desired environment(s):
