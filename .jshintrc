@@ -1,19 +1,33 @@
 {
-    "boss":      true
-  , "browser":   true
-  , "camelcase": true
-  , "curly":     false
-  , "eqeqeq":    true
-  , "immed":     true
-  , "latedef":   true
-  , "laxcomma":  true
-  , "maxlen":    100
-  , "newcap":    true
-  , "noarg":     true
-  , "node":      true
-  , "nonew":     true
-  , "quotmark":  "single"
-  , "strict":    true
-  , "undef":     true
-  , "unused":    true
+  "boss": true,
+  "browser": true,
+  "camelcase": true,
+  "curly": false,
+  "eqeqeq": true,
+  "immed": true,
+  "latedef": true,
+  "laxcomma": true,
+  "maxlen": 100,
+  "newcap": true,
+  "noarg": true,
+  "node": false,
+  "nonew": true,
+  "quotmark": "single",
+  "undef": true,
+  "unused": true,
+  "globals": {
+    "ok": true,
+    "expect": true,
+    "test": true,
+    "asyncTest": true,
+    "module": true,
+    "start": true,
+    "equal": true,
+    "QUnit": true,
+    "_": true,
+    "Backbone": true,
+    "exports": true,
+    "require": true,
+    "define": true
+  }
 }

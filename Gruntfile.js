@@ -26,15 +26,12 @@ module.exports = function(grunt) {
     jshint: {
       all: [
         'Gruntfile.js',
-        'backbone.do.js'
+        'backbone.do.js',
+        'test/*.js'
       ],
       options: {
         jshintrc: '.jshintrc'
       }
-    },
-
-    nodeunit: {
-      all: [ 'test/*_test.js' ]
     },
 
     qunit: {
@@ -66,7 +63,6 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-nodeunit');
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -74,6 +70,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build',   [ 'docco', 'uglify' ]);
   grunt.registerTask('default', [ 'test', 'build' ]);
-  grunt.registerTask('test',    [ 'jshint', 'nodeunit', 'connect', 'qunit' ]);
+  grunt.registerTask('test',    [ 'jshint', 'connect', 'qunit' ]);
 
 };
