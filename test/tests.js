@@ -20,14 +20,14 @@
 
   // TODO: Complete test suite
 
-  test('can use actions after calling init', 2, function () {
+  test('can use actions after calling Do', 2, function () {
     var Model = Backbone.Model.extend({
       actions: {
         someAction:    {},
         anotherAction: {}
       },
       initialize: function() {
-        Backbone.Do.init(this);
+        Backbone.Do(this);
       }
     });
 
@@ -36,7 +36,7 @@
     ok(model.anotherAction);
   });
 
-  test('must call init to use actions', 2, function () {
+  test('must call Do to use actions', 2, function () {
     var Model = Backbone.Model.extend({
       actions: {
         someAction:    {},

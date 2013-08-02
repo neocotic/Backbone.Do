@@ -24,11 +24,20 @@
   _ = _ === void 0 ? root._ : _;
   Backbone = Backbone === void 0 ? root.Backbone : Backbone;
 
-  // Initial Setup
-  // -------------
+  // Setup
+  // -----
 
   // TODO: Document
-  var Do = Backbone.Do = {};
+  var Do = Backbone.Do = function(model) {
+    var actions = _(model).result('actions');
+    _(actions).each(function (action, name) {
+      model[name] = function (options) {
+        return Do.perform(model, action, name, options);
+      };
+    });
+
+    return Do;
+  };
 
   // TODO: Document
   Do.defaultMethod = 'GET';
@@ -45,22 +54,40 @@
     GET:    'read'
   };
 
-  // Actions
+  // Helpers
   // -------
 
   // TODO: Document
-  Do.init = function(model) {
-    var _this = this,
-        actions = _(model).result('actions');
+  function getOptions(model, action, name, options) {
+    options = _.extend({}, action.options, options);
 
-    _(actions).each(function (action, name) {
-      model[name] = function (options) {
-        return _this.perform(model, action, name, options);
-      };
-    });
+    var attrs = _(action).result('attrs');
+    if (_(attrs).isString()) attrs = attrs.split(/\s+/);
+    if (_(attrs).isEmpty()) {
+      options.data = _.extend({}, _(action).result('data'), options.data);
+    } else if (!options.attrs) {
+      options.attrs = model.pick(attrs);
+    }
 
-    return this;
-  };
+    var base = _(model).result('url'),
+        path = _(action).result('url') || Do.parseName(name),
+        separator = base[base.length - 1] === '/' ? '' : '/';
+    options.url = base + separator + encodeURIComponent(path);
+
+    return options;
+  }
+
+  // Wrap an optional error callback with a fallback error event.
+  function wrapError(model, options) {
+    var error = options.error;
+    options.error = function(resp) {
+      if (error) error(model, resp, options);
+      model.trigger('error', model, resp, options);
+    };
+  }
+
+  // Actions
+  // -------
 
   // TODO: Document
   Do.parseName = function(name) {
@@ -69,11 +96,9 @@
 
   // TODO: Document
   Do.perform = function(model, action, name, options) {
-    options = _.extend({}, action.options, options);
+    options = getOptions(model, action, name, options);
 
     var attributes = model.attributes;
-
-    this._setOptions(model, action, name, options);
 
     if (_(options.parse).isUndefined()) options.parse = true;
 
@@ -93,34 +118,6 @@
     var type = options.method ? options.method.toUpperCase() : Do.defaultMethod;
     return model.sync(methodMap[type], model, options);
   };
-
-  // TODO: Document
-  Do._setOptions = function(model, action, name, options) {
-    var attrs = _(action).result('attrs');
-    if (_(attrs).isString()) attrs = attrs.split(/\s+/);
-    if (_(attrs).isEmpty()) {
-      options.data = _.extend({}, _(action).result('data'), options.data);
-    } else if (!options.attrs) {
-      options.attrs = model.pick(attrs);
-    }
-
-    var base = _(model).result('url'),
-        path = _(action).result('url') || this.parseName(name),
-        separator = base[base.length - 1] === '/' ? '' : '/';
-    options.url = base + separator + encodeURIComponent(path);
-  };
-
-  // Helpers
-  // -------
-
-  // Wrap an optional error callback with a fallback error event.
-  function wrapError(model, options) {
-    var error = options.error;
-    options.error = function(resp) {
-      if (error) error(model, resp, options);
-      model.trigger('error', model, resp, options);
-    };
-  }
 
   // TODO: Document
   return Do;

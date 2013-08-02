@@ -10,6 +10,8 @@
 
 [![Build Status](https://secure.travis-ci.org/neocotic/Backbone.Do.png)](http://travis-ci.org/neocotic/Backbone.Do)
 
+It can be used normally in any browser as well as in the [node.js][] environment.
+
 ## Install
 
 Install using the package manager for your desired environment(s):
@@ -19,6 +21,76 @@ Install using the package manager for your desired environment(s):
 $ npm install Backbone.Do
 # OR; for the browser:
 $ bower install Backbone.Do
+```
+
+## Example
+
+``` javascript
+var Book = Backbone.Model.extend({
+
+  urlRoot: '/books',
+
+  actions: {
+    buy: {
+      options: {
+        method: 'POST'
+      }
+    },
+
+    getPages: {
+      url:   'pages'one,
+      attrs: 'pageCount'
+    }
+  },
+
+  initialize: function() {
+    Backbone.Do(this);
+  }
+
+});
+
+var hobbit = new Book({
+  id:        'hobbit,
+  title:     'The Hobbit',
+  pageCount: 310
+});
+
+hobbit.buy().then(function() {
+  hobbit.getPages();
+});
+```
+
+## Actions
+
+TODO
+
+## Miscellaneous
+
+### `defaultMethod`
+
+The default HTTP method used by requests that don't specify one. This can be any of the following
+methods;
+
+- DELETE
+- GET *(default)*
+- PATCH
+- POST
+- PUT
+
+``` javascript
+Backbone.Do.defaultMethod = 'POST';
+```
+
+### `parseName`
+
+TODO
+
+### `VERSION`
+
+The current version of `Do`.
+
+``` javascript
+Backbone.Do.VERSION;
 ```
 
 ## Bugs
@@ -41,3 +113,4 @@ http://neocotic.com/Backbone.Do
 
 [@neocotic]: https://twitter.com/neocotic
 [Backbone.Do]: http://neocotic.com/Backbone.Do
+[node.js]: http://nodejs.org
