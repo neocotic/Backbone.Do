@@ -29,8 +29,8 @@
 
   // TODO: Document
   var Do = Backbone.Do = function(model) {
-    var actions = _(model).result('actions');
-    _(actions).each(function (action, name) {
+    var actions = _.result(model, 'actions');
+    _.each(actions, function (action, name) {
       model[name] = function (options) {
         return Do.perform(model, action, name, options);
       };
@@ -46,7 +46,7 @@
   Do.VERSION = '0.1.0';
 
   // Map from HTTP to CRUD for our reverse usage of `Backbone.sync`.
-  var methodMap = {
+  var typeMap = {
     POST:   'create',
     PUT:    'update',
     PATCH:  'patch',
@@ -58,19 +58,25 @@
   // -------
 
   // TODO: Document
+  function getAttributes(obj) {
+    var attrs = _.result(obj, 'attrs');
+    if (_.isString(attrs)) attrs = attrs.split(/\s+/);
+    return attrs;
+  }
+
+  // TODO: Document
   function getOptions(model, action, name, options) {
     options = _.extend({}, action.options, options);
 
-    var attrs = _(action).result('attrs');
-    if (_(attrs).isString()) attrs = attrs.split(/\s+/);
-    if (_(attrs).isEmpty()) {
-      options.data = _.extend({}, _(action).result('data'), options.data);
-    } else if (!options.attrs) {
-      options.attrs = model.pick(attrs);
+    var attrs = _.union(getAttributes(action), getAttributes(options));
+    if (_.isEmpty(attrs)) {
+      options.data = _.extend({}, _.result(action, 'data'), _.result(options, 'data'));
+    } else {
+      options.data = model.pick(attrs);
     }
 
-    var base = _(model).result('url'),
-        path = _(action).result('url') || Do.parseName(name),
+    var base = _.result(model, 'url'),
+        path = _.result(action, 'url') || Do.parseName(name),
         separator = base[base.length - 1] === '/' ? '' : '/';
     options.url = base + separator + encodeURIComponent(path);
 
@@ -100,14 +106,14 @@
 
     var attributes = model.attributes;
 
-    if (_(options.parse).isUndefined()) options.parse = true;
+    if (_.isUndefined(options.parse)) options.parse = true;
 
     var success = options.success;
     options.success = function(resp) {
       model.attributes = attributes;
 
       var serverAttrs = model.parse(resp, options);
-      if (_(serverAttrs).isObject() && !model.set(serverAttrs, options)) return false;
+      if (_.isObject(serverAttrs) && !model.set(serverAttrs, options)) return false;
 
       if (success) success(model, resp, options);
       model.trigger('action:' + name, model, resp, options);
@@ -115,8 +121,9 @@
     };
     wrapError(model, options);
 
-    var type = options.method ? options.method.toUpperCase() : Do.defaultMethod;
-    return model.sync(methodMap[type], model, options);
+    var method = options.method && options.method.toUpperCase(),
+        type   = typeMap[method] || typeMap[Do.defaultMethod];
+    return model.sync(type, model, options);
   };
 
   // TODO: Document

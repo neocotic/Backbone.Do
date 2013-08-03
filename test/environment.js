@@ -1,4 +1,4 @@
-(function() {
+(function () {
 
   var ajax = Backbone.ajax,
       sync = Backbone.sync,
