@@ -146,8 +146,8 @@
   test('name is parsed to build URL', 1, function () {
     var oldParse = Backbone.Do.parseName;
     Backbone.Do.parseName = function(name) {
-      return name.replace(/[A-Z]/g, function (letter) {
-        return '-' + letter.toLowerCase();
+      return name.replace(/[A-Z]+/g, function (str) {
+        return '-' + str.toLowerCase();
       });
     };
 

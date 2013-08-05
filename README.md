@@ -12,6 +12,13 @@
 
 It can be used normally in any browser as well as in the [node.js][] environment.
 
+# Important
+
+This [Backbone][] plugin is still in development as is not yet complete. Please check again in the
+near future.
+
+The majority of work remaining involves completing the unit tests and the documentation.
+
 ## Install
 
 Install using the package manager for your desired environment(s):
@@ -55,14 +62,14 @@ var hobbit = new Book({
   pageCount: 310
 });
 
-hobbit.buy().then(function() {
+hobbit.buy().then(function () {
   hobbit.getPages();
 });
 ```
 
 ## Actions
 
-TODO
+TODO: Complete section
 
 ## Miscellaneous
 
@@ -81,9 +88,21 @@ methods;
 Backbone.Do.defaultMethod = 'POST';
 ```
 
-### `parseName`
+### `parseName(name)`
 
-TODO
+If an action doesn't specify a `url`, this function will be called to derive a path from it's name.
+
+By default, it simply returns the `name` with no modifications, but this allows you to customize
+this behaviour. For example; if you wanted actions with names in camel case to instead use hypens
+you could use something like the following;
+
+``` javascript
+Backbone.Do.parseName = function(name) {
+  return name.replace(/[A-Z]+/g, function (str) {
+    return '-' + str.toLowerCase();
+  });
+};
+```
 
 ### `VERSION`
 
@@ -112,5 +131,6 @@ homepage;
 http://neocotic.com/Backbone.Do
 
 [@neocotic]: https://twitter.com/neocotic
-[Backbone.Do]: http://neocotic.com/Backbone.Do
+[backbone]: http://backbonejs.org
+[backbone.do]: http://neocotic.com/Backbone.Do
 [node.js]: http://nodejs.org
