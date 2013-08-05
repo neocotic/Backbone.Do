@@ -19,14 +19,14 @@ module.exports = function(grunt) {
         options: {
           output: 'docs'
         },
-        src: [ 'backbone.do.js' ]
+        src: [ '<%= pkg.name %>.js' ]
       }
     },
 
     jshint: {
       all: [
         'Gruntfile.js',
-        'backbone.do.js',
+        '<%= pkg.name %>.js',
         'test/*.js'
       ],
       options: {
@@ -45,12 +45,12 @@ module.exports = function(grunt) {
     uglify: {
       all: {
         files: {
-          'backbone.do.min.js': 'backbone.do.js'
+          '<%= pkg.name %>.min.js': '<%= pkg.name %>.js'
         }
       },
       options: {
-        sourceMap: 'backbone.do.min.map',
-        banner: '/*! <%= pkg.name %> v<%= pkg.version %> | (c) ' +
+        sourceMap: '<%= pkg.name %>.min.map',
+        banner: '/*! Backbone.Do v<%= pkg.version %> | (c) ' +
           '<%= grunt.template.today("yyyy") %> <%= pkg.author.name %> | ' +
           '<%= pkg.licenses[0].type %> License */\n'
       }

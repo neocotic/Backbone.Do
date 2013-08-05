@@ -1,5 +1,5 @@
 {
-  "name": "Backbone.Do",
+  "name": "backbone.do",
   "version": "0.1.0alpha",
   "main": "backbone.do.js",
   "dependencies": {

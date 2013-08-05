@@ -25,9 +25,9 @@ Install using the package manager for your desired environment(s):
 
 ``` bash
 # for node.js:
-$ npm install Backbone.Do
+$ npm install backbone.do
 # OR; for the browser:
-$ bower install Backbone.Do
+$ bower install backbone.do
 ```
 
 ## Example
