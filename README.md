@@ -45,7 +45,7 @@ var Book = Backbone.Model.extend({
     },
 
     getPages: {
-      url:   'pages'one,
+      url:   'pages',
       attrs: 'pageCount'
     }
   },
