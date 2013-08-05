@@ -1,455 +1,80 @@
-<!DOCTYPE html>
+<!DOCTYPE html>  <html> <head>   <title>backbone.do.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               backbone.do.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <p><a href="http://neocotic.com/Backbone.Do">Backbone.Do</a> <br />
+Copyright (c) 2013 Alasdair Mercer <br />
+Freely distributable under the MIT license</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">factory</span><span class="p">)</span> <span class="p">{</span>
+  <span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
 
-<html>
-<head>
-  <title>backbone.do.js</title>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-  <link rel="stylesheet" media="all" href="docco.css" />
-</head>
-<body>
-  <div id="container">
-    <div id="background"></div>
-    
-    <ul class="sections">
-        
-          <li id="title">
-              <div class="annotation">
-                  <h1>backbone.do.js</h1>
-              </div>
-          </li>
-        
-        
-        
-        <li id="section-1">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-1">&#182;</a>
-              </div>
-              <p><a href="http://neocotic.com/Backbone.Do">Backbone.Do</a><br>Copyright (c) 2013 Alasdair Mercer<br>Freely distributable under the MIT license</p>
+  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">exports</span> <span class="o">===</span> <span class="s1">&#39;object&#39;</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Export module for Node.js (or similar) environments.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">factory</span><span class="p">(</span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;underscore&#39;</span><span class="p">),</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;Backbone&#39;</span><span class="p">),</span> <span class="nx">root</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">define</span> <span class="o">===</span> <span class="s1">&#39;function&#39;</span> <span class="o">&amp;&amp;</span> <span class="nx">define</span><span class="p">.</span><span class="nx">amd</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Register as an anonymous module.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">define</span><span class="p">([</span> <span class="s1">&#39;underscore&#39;</span><span class="p">,</span> <span class="s1">&#39;backbone&#39;</span> <span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">_</span><span class="p">,</span> <span class="nx">Backbone</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">factory</span><span class="p">(</span><span class="nx">_</span><span class="p">,</span> <span class="nx">Backbone</span><span class="p">,</span> <span class="nx">root</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Fallback on a simple global variable (e.g. browsers).</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">factory</span><span class="p">(</span><span class="nx">root</span><span class="p">.</span><span class="nx">_</span><span class="p">,</span> <span class="nx">root</span><span class="p">.</span><span class="nx">Backbone</span><span class="p">,</span> <span class="nx">root</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}(</span><span class="k">this</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">_</span><span class="p">,</span> <span class="nx">Backbone</span><span class="p">,</span> <span class="nx">root</span><span class="p">)</span> <span class="p">{</span>
+  <span class="s1">&#39;use strict&#39;</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Try our best to ensure Backbone and Underscore are available.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">_</span> <span class="o">=</span> <span class="nx">_</span> <span class="o">===</span> <span class="k">void</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">root</span><span class="p">.</span><span class="nx">_</span> <span class="o">:</span> <span class="nx">_</span><span class="p">;</span>
+  <span class="nx">Backbone</span> <span class="o">=</span> <span class="nx">Backbone</span> <span class="o">===</span> <span class="k">void</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">root</span><span class="p">.</span><span class="nx">Backbone</span> <span class="o">:</span> <span class="nx">Backbone</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <h2>Setup</h2>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>Bind any actions on a given <code>model</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">Do</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Do</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">model</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">actions</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">result</span><span class="p">(</span><span class="nx">model</span><span class="p">,</span> <span class="s1">&#39;actions&#39;</span><span class="p">);</span>
+    <span class="nx">_</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">actions</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">model</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">Do</span><span class="p">.</span><span class="nx">perform</span><span class="p">(</span><span class="nx">model</span><span class="p">,</span> <span class="nx">action</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+      <span class="p">};</span>
+    <span class="p">});</span>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>(<span class="function"><span class="keyword">function</span> <span class="params">(root, factory)</span> {</span>
-  <span class="string">'use strict'</span>;
-
-  <span class="keyword">if</span> (<span class="keyword">typeof</span> exports === <span class="string">'object'</span>) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-2">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
-              </div>
-              <p>Export module for Node.js (or similar) environments.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    module.exports = factory(require(<span class="string">'underscore'</span>), require(<span class="string">'Backbone'</span>), root);
-  } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> define === <span class="string">'function'</span> &amp;&amp; define.amd) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-3">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
-              </div>
-              <p>Register as an anonymous module.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    define([ <span class="string">'underscore'</span>, <span class="string">'backbone'</span> ], <span class="function"><span class="keyword">function</span> <span class="params">(_, Backbone)</span> {</span>
-        <span class="keyword">return</span> factory(_, Backbone, root);
-    });
-  } <span class="keyword">else</span> {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p>Fallback on a simple global variable (e.g. browsers).</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    factory(root._, root.Backbone, root);
-  }
-}(<span class="keyword">this</span>, <span class="function"><span class="keyword">function</span> <span class="params">(_, Backbone, root)</span> {</span>
-  <span class="string">'use strict'</span>;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
-              </div>
-              <p>Try our best to ensure Backbone and Underscore are available.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  _ = _ === <span class="keyword">void</span> <span class="number">0</span> ? root._ : _;
-  Backbone = Backbone === <span class="keyword">void</span> <span class="number">0</span> ? root.Backbone : Backbone;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <h2>Setup</h2>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p>Bind any actions on a given <code>model</code>.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  <span class="keyword">var</span> Do = Backbone.Do = <span class="keyword">function</span>(model) {
-    <span class="keyword">var</span> actions = _.result(model, <span class="string">'actions'</span>);
-    _.each(actions, <span class="function"><span class="keyword">function</span> <span class="params">(action, name)</span> {</span>
-      model[name] = <span class="function"><span class="keyword">function</span> <span class="params">(options)</span> {</span>
-        <span class="keyword">return</span> Do.perform(model, action, name, options);
-      };
-    });
-
-    <span class="keyword">return</span> Do;
-  };</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <p>Default HTTP method used when no/invalid method was specified.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  Do.defaultMethod = <span class="string">'GET'</span>;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <p>Current version of the <code>Do</code> plugin.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  Do.VERSION = <span class="string">'0.1.0alpha'</span>;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-10">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
-              </div>
-              <p>Map from HTTP to CRUD for our reverse usage of <code>Backbone.sync</code>.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  <span class="keyword">var</span> typeMap = {
-    POST:   <span class="string">'create'</span>,
-    PUT:    <span class="string">'update'</span>,
-    PATCH:  <span class="string">'patch'</span>,
-    DELETE: <span class="string">'delete'</span>,
-    GET:    <span class="string">'read'</span>
-  };</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <h2>Helpers</h2>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-12">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
-              </div>
-              <p>Extract and parse any attributes declared on a given object.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  <span class="function"><span class="keyword">function</span> <span class="title">getAttributes</span><span class="params">(obj)</span> {</span>
-    <span class="keyword">var</span> attrs = _.result(obj, <span class="string">'attrs'</span>);
-    <span class="keyword">return</span> _.isString(attrs) ? attrs.split(<span class="regexp">/\s+/</span>) : attrs;
-  }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-13">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
-              </div>
-              <p>Merge the options specified for a specific action invocation with it&#39;s default options.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  <span class="function"><span class="keyword">function</span> <span class="title">getOptions</span><span class="params">(model, action, name, options)</span> {</span>
-    options = _.extend({}, action.options, options);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-14">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
-              </div>
-              <p>Merge attributes defined on the <code>action</code> as well as any on current <code>options</code>.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> attrs = _.union(getAttributes(action), getAttributes(options));</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-15">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
-              </div>
-              <p>The contents request to the server will either be a key-value map of the specified
-attributes, if any, or the merged <code>data</code> from the <code>action</code> and the current <code>options</code>.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (_.isEmpty(attrs)) {
-      options.data = _.extend({}, _.result(action, <span class="string">'data'</span>), _.result(options, <span class="string">'data'</span>));
-    } <span class="keyword">else</span> {
-      options.data = model.pick(attrs);
-    }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-16">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
-              </div>
-              <p>Build the URL to which the request will be sent when the action is invoked.
+    <span class="k">return</span> <span class="nx">Do</span><span class="p">;</span>
+  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>Default HTTP method used when no/invalid method was specified.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">Do</span><span class="p">.</span><span class="nx">defaultMethod</span> <span class="o">=</span> <span class="s1">&#39;GET&#39;</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>Current version of the <code>Do</code> plugin.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">Do</span><span class="p">.</span><span class="nx">VERSION</span> <span class="o">=</span> <span class="s1">&#39;0.1.0alpha&#39;</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>Map from HTTP to CRUD for our reverse usage of <code>Backbone.sync</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">typeMap</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">POST</span><span class="o">:</span>   <span class="s1">&#39;create&#39;</span><span class="p">,</span>
+    <span class="nx">PUT</span><span class="o">:</span>    <span class="s1">&#39;update&#39;</span><span class="p">,</span>
+    <span class="nx">PATCH</span><span class="o">:</span>  <span class="s1">&#39;patch&#39;</span><span class="p">,</span>
+    <span class="nx">DELETE</span><span class="o">:</span> <span class="s1">&#39;delete&#39;</span><span class="p">,</span>
+    <span class="nx">GET</span><span class="o">:</span>    <span class="s1">&#39;read&#39;</span>
+  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <h2>Helpers</h2>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>Extract and parse any attributes declared on a given object.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">getAttributes</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">attrs</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">result</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="s1">&#39;attrs&#39;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">_</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">attrs</span><span class="p">)</span> <span class="o">?</span> <span class="nx">attrs</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="sr">/\s+/</span><span class="p">)</span> <span class="o">:</span> <span class="nx">attrs</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>Merge the options specified for a specific action invocation with it's default options.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">getOptions</span><span class="p">(</span><span class="nx">model</span><span class="p">,</span> <span class="nx">action</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">options</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">extend</span><span class="p">({},</span> <span class="nx">action</span><span class="p">.</span><span class="nx">options</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <p>Merge attributes defined on the <code>action</code> as well as any on current <code>options</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">attrs</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">union</span><span class="p">(</span><span class="nx">getAttributes</span><span class="p">(</span><span class="nx">action</span><span class="p">),</span> <span class="nx">getAttributes</span><span class="p">(</span><span class="nx">options</span><span class="p">));</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <p>The contents request to the server will either be a key-value map of the specified
+attributes, if any, or the merged <code>data</code> from the <code>action</code> and the current <code>options</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">(</span><span class="nx">attrs</span><span class="p">))</span> <span class="p">{</span>
+      <span class="nx">options</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">extend</span><span class="p">({},</span> <span class="nx">_</span><span class="p">.</span><span class="nx">result</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">),</span> <span class="nx">_</span><span class="p">.</span><span class="nx">result</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">));</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="nx">options</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">pick</span><span class="p">(</span><span class="nx">attrs</span><span class="p">);</span>
+    <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <p>Build the URL to which the request will be sent when the action is invoked.
 If the <code>action</code> has no URL specified, <code>parseName</code> is called to derive the path based on the
-action&#39;s <code>name</code>.</p>
+action's <code>name</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">base</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">result</span><span class="p">(</span><span class="nx">model</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="p">),</span>
+        <span class="nx">path</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">result</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="nx">Do</span><span class="p">.</span><span class="nx">parseName</span><span class="p">(</span><span class="nx">name</span><span class="p">),</span>
+        <span class="nx">separator</span> <span class="o">=</span> <span class="nx">base</span><span class="p">[</span><span class="nx">base</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">===</span> <span class="s1">&#39;/&#39;</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="s1">&#39;/&#39;</span><span class="p">;</span>
+    <span class="nx">options</span><span class="p">.</span><span class="nx">url</span> <span class="o">=</span> <span class="nx">base</span> <span class="o">+</span> <span class="nx">separator</span> <span class="o">+</span> <span class="nb">encodeURIComponent</span><span class="p">(</span><span class="nx">path</span><span class="p">);</span>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> base = _.result(model, <span class="string">'url'</span>),
-        path = _.result(action, <span class="string">'url'</span>) || Do.parseName(name),
-        separator = base[base.length - <span class="number">1</span>] === <span class="string">'/'</span> ? <span class="string">''</span> : <span class="string">'/'</span>;
-    options.url = base + separator + encodeURIComponent(path);
-
-    <span class="keyword">return</span> options;
-  }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-17">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
-              </div>
-              <p>Wrap an optional error callback with a fallback error event.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  <span class="function"><span class="keyword">function</span> <span class="title">wrapError</span><span class="params">(model, options)</span> {</span>
-    <span class="keyword">var</span> error = options.error;
-    options.error = <span class="keyword">function</span>(resp) {
-      <span class="keyword">if</span> (error) error(model, resp, options);
-      model.trigger(<span class="string">'error'</span>, model, resp, options);
-    };
-  }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-18">
-            <div class="annotation">
-              
-              <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-18">&#182;</a>
-              </div>
-              <h2>Actions</h2>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-19">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
-              </div>
-              <p>Allow users to change how actions with no <code>url</code> specified have their URL path derived by
-overriding this function which, by default, simply returns the value of it&#39;s only parameter.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  Do.parseName = <span class="keyword">function</span>(name) {
-    <span class="keyword">return</span> name;
-  };</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-20">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
-              </div>
-              <p>TODO: Document
+    <span class="k">return</span> <span class="nx">options</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <p>Wrap an optional error callback with a fallback error event.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">wrapError</span><span class="p">(</span><span class="nx">model</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">error</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">error</span><span class="p">;</span>
+    <span class="nx">options</span><span class="p">.</span><span class="nx">error</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">resp</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="nx">error</span><span class="p">(</span><span class="nx">model</span><span class="p">,</span> <span class="nx">resp</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+      <span class="nx">model</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="nx">model</span><span class="p">,</span> <span class="nx">resp</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+    <span class="p">};</span>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <h2>Actions</h2>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <p>Allow users to change how actions with no <code>url</code> specified have their URL path derived by
+overriding this function which, by default, simply returns the value of it's only parameter.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">Do</span><span class="p">.</span><span class="nx">parseName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">name</span><span class="p">;</span>
+  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <p>TODO: Document
 Sync the <code>model</code> to the server based on the invoked <code>action</code>.
-If the server returns an attributes hash that differs, the model&#39;s state will be <code>set</code> again.</p>
+If the server returns an attributes hash that differs, the model's state will be <code>set</code> again.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">Do</span><span class="p">.</span><span class="nx">perform</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">model</span><span class="p">,</span> <span class="nx">action</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">options</span> <span class="o">=</span> <span class="nx">getOptions</span><span class="p">(</span><span class="nx">model</span><span class="p">,</span> <span class="nx">action</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  Do.perform = <span class="keyword">function</span>(model, action, name, options) {
-    options = getOptions(model, action, name, options);
+    <span class="kd">var</span> <span class="nx">attributes</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">attributes</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-21">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-21">&#182;</a>               </div>               <p>After a successful server-side action, the client is (optionally) updated with the
+server-side state.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">parse</span><span class="p">))</span> <span class="nx">options</span><span class="p">.</span><span class="nx">parse</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 
-    <span class="keyword">var</span> attributes = model.attributes;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-21">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
-              </div>
-              <p>After a successful server-side action, the client is (optionally) updated with the
-server-side state.</p>
+    <span class="kd">var</span> <span class="nx">success</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">success</span><span class="p">;</span>
+    <span class="nx">options</span><span class="p">.</span><span class="nx">success</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">resp</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-22">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-22">&#182;</a>               </div>               <p>Ensure that the model's attributes are restored during synchronous actions.</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">model</span><span class="p">.</span><span class="nx">attributes</span> <span class="o">=</span> <span class="nx">attributes</span><span class="p">;</span>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (_.isUndefined(options.parse)) options.parse = <span class="literal">true</span>;
+      <span class="kd">var</span> <span class="nx">serverAttrs</span> <span class="o">=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">resp</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isObject</span><span class="p">(</span><span class="nx">serverAttrs</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">model</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">serverAttrs</span><span class="p">,</span> <span class="nx">options</span><span class="p">))</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 
-    <span class="keyword">var</span> success = options.success;
-    options.success = <span class="keyword">function</span>(resp) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-22">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
-              </div>
-              <p>Ensure that the model&#39;s attributes are restored during synchronous actions.</p>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">success</span><span class="p">)</span> <span class="nx">success</span><span class="p">(</span><span class="nx">model</span><span class="p">,</span> <span class="nx">resp</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+      <span class="nx">model</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;action:&#39;</span> <span class="o">+</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">model</span><span class="p">,</span> <span class="nx">resp</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+      <span class="nx">model</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;action&#39;</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">model</span><span class="p">,</span> <span class="nx">resp</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+    <span class="p">};</span>
+    <span class="nx">wrapError</span><span class="p">(</span><span class="nx">model</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-23">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-23">&#182;</a>               </div>               <p>Reverse the method-type mapping that Backbone uses to determine what HTTP method is used for
+the request, falling back on <code>defaultMethod</code> if required.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">method</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">method</span> <span class="o">&amp;&amp;</span> <span class="nx">options</span><span class="p">.</span><span class="nx">method</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">(),</span>
+        <span class="nx">type</span>   <span class="o">=</span> <span class="nx">typeMap</span><span class="p">[</span><span class="nx">method</span><span class="p">]</span> <span class="o">||</span> <span class="nx">typeMap</span><span class="p">[</span><span class="nx">Do</span><span class="p">.</span><span class="nx">defaultMethod</span><span class="p">];</span></pre></div>             </td>           </tr>                               <tr id="section-24">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-24">&#182;</a>               </div>               <p>Use the logic within <code>Backbone.sync</code> to our advantage.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">return</span> <span class="nx">model</span><span class="p">.</span><span class="nx">sync</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">model</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+  <span class="p">};</span>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      model.attributes = attributes;
+<span class="p">}));</span>
 
-      <span class="keyword">var</span> serverAttrs = model.parse(resp, options);
-      <span class="keyword">if</span> (_.isObject(serverAttrs) &amp;&amp; !model.set(serverAttrs, options)) <span class="keyword">return</span> <span class="literal">false</span>;
-
-      <span class="keyword">if</span> (success) success(model, resp, options);
-      model.trigger(<span class="string">'action:'</span> + name, model, resp, options);
-      model.trigger(<span class="string">'action'</span>, name, model, resp, options);
-    };
-    wrapError(model, options);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-23">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
-              </div>
-              <p>Reverse the method-type mapping that Backbone uses to determine what HTTP method is used for
-the request, falling back on <code>defaultMethod</code> if required.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> method = options.method &amp;&amp; options.method.toUpperCase(),
-        type   = typeMap[method] || typeMap[Do.defaultMethod];</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-24">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
-              </div>
-              <p>Use the logic within <code>Backbone.sync</code> to our advantage.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">return</span> model.sync(type, model, options);
-  };
-
-}));</pre></div></div>
-            
-        </li>
-        
-    </ul>
-  </div>
-</body>
-</html>
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
