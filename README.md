@@ -57,7 +57,7 @@ var Book = Backbone.Model.extend({
 });
 
 var hobbit = new Book({
-  id:        'hobbit,
+  id:        'hobbit',
   title:     'The Hobbit',
   pageCount: 310
 });
