@@ -43,7 +43,7 @@
   Do.defaultMethod = 'GET';
 
   // Current version of the `Do` plugin.
-  Do.VERSION = '0.1.0';
+  Do.VERSION = '0.1.0alpha';
 
   // Map from HTTP to CRUD for our reverse usage of `Backbone.sync`.
   var typeMap = {
