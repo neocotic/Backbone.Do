@@ -129,6 +129,25 @@
     deepEqual(this.ajaxSettings.data, doc.pick('number', 'string', 'flag'));
   });
 
+  test('events', 7, function () {
+    var mockResp = { mock: true };
+    this.successArgs = [ mockResp ];
+
+    doc.on('action:doAction', function (model, resp, options) {
+      strictEqual(model, doc);
+      strictEqual(resp, mockResp);
+      ok(options);
+    });
+    doc.on('action', function (name, model, resp, options) {
+      equal(name, 'doAction');
+      strictEqual(model, doc);
+      strictEqual(resp, mockResp);
+      ok(options);
+    });
+
+    doc.doAction();
+  });
+
   test('pick attributes to be sent as data and have custom URLs using functions', 5, function () {
     doc.doSameAction({
       attrs: function () {

@@ -19,7 +19,10 @@
         model:   model,
         options: options
       };
-      return sync.apply(this, arguments);
+      var xhr = sync.apply(this, arguments);
+      if (env.successArgs) options.success.apply(this, env.successArgs);
+      if (env.errorArgs) options.error.apply(this, env.errorArgs);
+      return xhr;
     };
   });
 
