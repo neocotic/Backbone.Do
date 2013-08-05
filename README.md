@@ -30,11 +30,17 @@ $ npm install backbone.do
 $ bower install backbone.do
 ```
 
-## Example
+Obviously, this plugin depends on [Backbone][] along with its dependencies.
+
+## API
+
+### Actions
+
+Giving your model actions is as simple as adding a new hash and calling this plugin in your model's
+`initialize` function.
 
 ``` javascript
 var Book = Backbone.Model.extend({
-
   urlRoot: '/books',
 
   actions: {
@@ -53,9 +59,14 @@ var Book = Backbone.Model.extend({
   initialize: function() {
     Backbone.Do(this);
   }
-
 });
+```
 
+Now the `Book` model has the 2 additional functions; `buy` and `getPages` which, when called, will
+result in a request being sent to the server based on their options as well as any options passed
+in.
+
+``` javascript
 var hobbit = new Book({
   id:        'hobbit',
   title:     'The Hobbit',
@@ -67,13 +78,43 @@ hobbit.buy().then(function () {
 });
 ```
 
-## Actions
+If the server returns an attribute hash, those values will then be applied to the model. In the
+previous example the following requests would have been sent to the server:
 
-TODO: Complete section
+```
+POST http://example.com/books/hobbit/buy
+GET  http://example.com/books/hobbit/pages
+```
 
-## Miscellaneous
+The second request would have been sent `pageCount` key-value pair from the model in the request
+body.
 
-### `defaultMethod`
+There's a lot of ways in which actions can be declared so let's go over the different
+configurations. Each configuration can also be a function that returns the value to be used and all
+are entirely optional.
+
+#### `attrs`
+
+Type(s): `String` `String[]`
+
+A subset of attributes to be picked from the model and sent to the server.
+
+**Note:** If `attrs` is used, the resulting attributes hash will replace the `data` confiugration.
+
+#### `data`
+
+JSON-ifiable value that is to be sent to the server in the request body.
+
+**Note:** If the `attrs` configuration is used, this will be replaced by the resulting attributes
+hash.
+
+TODO: Complete properties
+
+TODO: Cover option overloading
+
+### Miscellaneous
+
+#### `defaultMethod`
 
 The default HTTP method used by requests that don't specify one. This can be any of the following
 methods;
@@ -88,7 +129,7 @@ methods;
 Backbone.Do.defaultMethod = 'POST';
 ```
 
-### `parseName(name)`
+#### `parseName(name)`
 
 If an action doesn't specify a `url`, this function will be called to derive a path from it's name.
 
@@ -104,9 +145,9 @@ Backbone.Do.parseName = function(name) {
 };
 ```
 
-### `VERSION`
+#### `VERSION`
 
-The current version of `Do`.
+The current version of this plugin.
 
 ``` javascript
 Backbone.Do.VERSION;

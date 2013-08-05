@@ -32,7 +32,7 @@
     var actions = _.result(model, 'actions');
     _.each(actions, function (action, name) {
       model[name] = function (options) {
-        return Do.perform(model, action, name, options);
+        return Do._perform(model, action, name, options);
       };
     });
 
@@ -63,8 +63,26 @@
     return _.isString(attrs) ? attrs.split(/\s+/) : attrs;
   }
 
+  // Wrap an optional error callback with a fallback error event.
+  function wrapError(model, options) {
+    var error = options.error;
+    options.error = function(resp) {
+      if (error) error(model, resp, options);
+      model.trigger('error', model, resp, options);
+    };
+  }
+
+  // Actions
+  // -------
+
+  // Allow users to change how actions with no `url` specified have their URL path derived by
+  // overriding this function which, by default, simply returns the value of it's only parameter.
+  Do.parseName = function(name) {
+    return name;
+  };
+
   // Merge the options specified for a specific action invocation with it's default options.
-  function getOptions(model, action, name, options) {
+  Do._getOptions = function(model, action, name, options) {
     options = _.extend({}, action.options, options);
 
     // Merge attributes defined on the `action` as well as any on current `options`.
@@ -85,32 +103,16 @@
         separator = base[base.length - 1] === '/' ? '' : '/';
     options.url = base + separator + encodeURIComponent(path);
 
+    // TODO: Remove `action.options` and just use `action` as the options
+    // TODO: Omit unecessary options (e.g. `attrs`, `method`)
+
     return options;
-  }
-
-  // Wrap an optional error callback with a fallback error event.
-  function wrapError(model, options) {
-    var error = options.error;
-    options.error = function(resp) {
-      if (error) error(model, resp, options);
-      model.trigger('error', model, resp, options);
-    };
-  }
-
-  // Actions
-  // -------
-
-  // Allow users to change how actions with no `url` specified have their URL path derived by
-  // overriding this function which, by default, simply returns the value of it's only parameter.
-  Do.parseName = function(name) {
-    return name;
   };
 
-  // TODO: Document
   // Sync the `model` to the server based on the invoked `action`.
   // If the server returns an attributes hash that differs, the model's state will be `set` again.
-  Do.perform = function(model, action, name, options) {
-    options = getOptions(model, action, name, options);
+  Do._perform = function(model, action, name, options) {
+    options = Do._getOptions(model, action, name, options);
 
     var attributes = model.attributes;
 
