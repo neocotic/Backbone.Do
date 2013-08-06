@@ -55,8 +55,7 @@ var Book = Backbone.Model.extend({
 
 Now the `Book` model has the 2 additional functions; `buy` and `getPages` which, when called, will
 result in a request being sent to the server based on their options as well as any options passed
-in. Each action function accepts optional options that can overload the default configurations for
-that action.
+in.
 
 ``` javascript
 var hobbit = new Book({
@@ -83,6 +82,23 @@ GET  http://example.com/books/hobbit/pages
 
 The second request would have been sent `pageCount` key-value pair from the model in the request
 body.
+
+Each action function accepts optional options that can overload the default configurations for
+that action.
+
+``` javascript
+var ShoppingCart = Backbone.View.extend({
+  events: {
+    'click :submit': 'checkout'
+  },
+
+  checkout: function() {
+    this.model.buy({
+      quantity: this.$('input.quantity').val()
+    });
+  }
+});
+```
 
 There's a lot of ways in which actions can be declared so let's go over the different
 configurations. Each configuration can also be a function that returns the value to be used and all
@@ -184,7 +200,7 @@ Backbone.Do.defaultMethod = 'POST';
 If an action doesn't specify a `url`, this function will be called to derive a path from it's name.
 
 By default, it simply returns the `name` with no modifications, but this allows you to customize
-this behaviour. For example; if you wanted actions with names in camel case to instead use hypens
+this behaviour. For example; if you wanted actions with names in camel case to instead use hyphens
 you could use something like the following;
 
 ``` javascript
