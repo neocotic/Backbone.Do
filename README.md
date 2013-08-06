@@ -47,10 +47,6 @@ var Book = Backbone.Model.extend({
     }
   },
 
-  defaults: function() {
-    return { pages: [] };
-  },
-
   initialize: function() {
     Backbone.Do(this);
   }
