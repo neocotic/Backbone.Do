@@ -1,7 +1,7 @@
 {
   "name": "backbone.do",
   "description": "Backbone plugin to make model actions doable",
-  "version": "0.1.0alpha",
+  "version": "0.1.0",
   "homepage": "http://neocotic.com/Backbone.Do",
   "bugs": {
     "url": "https://github.com/neocotic/Backbone.Do/issues"

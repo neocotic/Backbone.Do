@@ -4,48 +4,44 @@
     urlRoot: '/test',
 
     actions: {
-      camelCase: {},
+      doAnything: {},
       doAction: {
         url: 'action',
         attrs: 'number string'
       },
       doSameAction: {
-        url: function () {
-          return 'action';
+        url: 'action',
+        attrs: [ 'number', 'string' ]
+      },
+      doActionWithData: {
+        data: { foo: 'bar' }
+      },
+      doDelete:         { method: 'DELETE' },
+      doGet:            { method: 'GET'    },
+      doPatch:          { method: 'PATCH'  },
+      doPost:           { method: 'POST'   },
+      doPut:            { method: 'PUT'    },
+      doSomethingWeird: { method: 'WEIRD'  },
+      doComplexWithAttrs: {
+        url: function() {
+          return 'complex-attrs';
         },
-        attrs: function () {
-          return [ 'number', 'string' ];
+        attrs: function() {
+          return 'number string';
+        },
+        method: function() {
+          return 'PUT';
         }
       },
-      doAnything: {},
-      doDelete: {
-        options: {
-          method: 'DELETE'
-        }
-      },
-      doGet: {
-        options: {
-          method: 'GET'
-        }
-      },
-      doPatch: {
-        options: {
-          method: 'PATCH'
-        }
-      },
-      doPost: {
-        options: {
-          method: 'POST'
-        }
-      },
-      doPut: {
-        options: {
-          method: 'PUT'
-        }
-      },
-      doSomethingWeird: {
-        options: {
-          method: 'WEIRD'
+      doComplexWithData: {
+        url: function() {
+          return 'complex-data';
+        },
+        data: function() {
+          return { foo: 'bar' };
+        },
+        method: function() {
+          return 'POST';
         }
       }
     },
@@ -109,7 +105,49 @@
     ok(!model.someAction);
   });
 
-  asyncTest('version is correct', 1, function () {
+  test('actions can be a function', 1, function () {
+    var Model = Backbone.Model.extend({
+      actions: function() {
+        return {
+          someAction: {}
+        };
+      },
+      initialize: function() {
+        Backbone.Do(this);
+      }
+    });
+
+    var model = new Model();
+    ok(model.someAction);
+  });
+
+  test('individual actions can be functions', 2, function () {
+    var Model = Backbone.Model.extend({
+      actions: {
+        someAction: function() {
+          return {};
+        },
+        otherAction: {}
+      },
+      initialize: function() {
+        Backbone.Do(this);
+      }
+    });
+
+    var model = new Model();
+    ok(model.someAction);
+    ok(model.otherAction);
+  });
+
+  asyncTest('version matches bower', 1, function () {
+    ajax({ method: 'GET', url: '../bower.json' }, function (resp) {
+      var bwr = JSON.parse(resp);
+      equal(Backbone.Do.VERSION, bwr.version);
+      start();
+    });
+  });
+
+  asyncTest('version matches npm', 1, function () {
     ajax({ method: 'GET', url: '../package.json' }, function (resp) {
       var pkg = JSON.parse(resp);
       equal(Backbone.Do.VERSION, pkg.version);
@@ -117,19 +155,122 @@
     });
   });
 
-  test('pick attributes to be sent as data and have custom URLs', 5, function () {
-    doc.doAction({
-      attrs: 'flag'
-    });
+  test('known configurations can be functions (excl. attrs)', 4, function () {
+    doc.doComplexWithData();
+
+    strictEqual(this.syncArgs.model, doc);
+    equal(this.ajaxSettings.type, 'POST');
+    equal(this.ajaxSettings.url, '/test/test1/complex-data');
+    deepEqual(this.ajaxSettings.data, { foo: 'bar' });
+  });
+
+  test('known configurations can be functions (excl. data)', 4, function () {
+    doc.doComplexWithAttrs();
+
+    strictEqual(this.syncArgs.model, doc);
+    equal(this.ajaxSettings.type, 'PUT');
+    equal(this.ajaxSettings.url, '/test/test1/complex-attrs');
+    deepEqual(this.ajaxSettings.data, doc.pick('number', 'string'));
+  });
+
+  test('actions can use a custom URL path', 4, function () {
+    doc.doAction();
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.syncArgs.method, 'read');
     equal(this.ajaxSettings.type, 'GET');
     equal(this.ajaxSettings.url, '/test/test1/action');
+  });
+
+  test('custom URL paths are encoded', 4, function () {
+    var path = 'abcdefghijklmnopqrstuvwxyz0123456789!"£$%^&*()=+-_ `|\\,<.>/?;:\'@#~[{]}';
+    doc.doAction({ url: path });
+
+    strictEqual(this.syncArgs.model, doc);
+    equal(this.syncArgs.method, 'read');
+    equal(this.ajaxSettings.type, 'GET');
+    equal(this.ajaxSettings.url, '/test/test1/' + encodeURIComponent(path));
+  });
+
+  test('pick attributes as string can be sent as data', 2, function () {
+    doc.doAction();
+
+    strictEqual(this.syncArgs.model, doc);
+    deepEqual(this.ajaxSettings.data, doc.pick('number', 'string'));
+  });
+
+  test('pick attributes in array can be sent as data', 2, function () {
+    doc.doSameAction();
+
+    strictEqual(this.syncArgs.model, doc);
+    deepEqual(this.ajaxSettings.data, doc.pick('number', 'string'));
+  });
+
+  test('merged pick attributes as strings can be sent as data', 2, function () {
+    doc.doAction({ attrs: 'flag' });
+
+    strictEqual(this.syncArgs.model, doc);
     deepEqual(this.ajaxSettings.data, doc.pick('number', 'string', 'flag'));
   });
 
-  test('events', 7, function () {
+  test('merged pick attributes in arrays can be sent as data', 2, function () {
+    doc.doAction({ attrs: [ 'flag' ] });
+
+    strictEqual(this.syncArgs.model, doc);
+    deepEqual(this.ajaxSettings.data, doc.pick('number', 'string', 'flag'));
+  });
+
+  test('pick attributes have priority over data', 2, function () {
+    doc.doAction({ foo: 'bar' });
+
+    strictEqual(this.syncArgs.model, doc);
+    deepEqual(this.ajaxSettings.data, doc.pick('number', 'string'));
+  });
+
+  test('data can be sent', 2, function () {
+    doc.doActionWithData();
+
+    strictEqual(this.syncArgs.model, doc);
+    deepEqual(this.ajaxSettings.data, { foo: 'bar' });
+  });
+
+  test('merge data to be sent', 2, function () {
+    var data = { fu: 'baz' };
+    doc.doActionWithData({ data: data });
+
+    strictEqual(this.syncArgs.model, doc);
+    deepEqual(this.ajaxSettings.data, _.extend({ foo: 'bar' }, data));
+  });
+
+  test('validate before set', 2, function () {
+    var errorMessage = 'Invalid!';
+    this.successArgs = [ { valid: false } ];
+
+    doc.validate = function(attrs) {
+      if (!attrs.valid) return errorMessage;
+    };
+
+    var lastError;
+    doc.on('invalid', function (model, error) {
+      lastError = error;
+    });
+
+    doc.doAction();
+
+    equal(lastError, errorMessage);
+    equal(doc.validationError, errorMessage);
+  });
+
+  test('set after action', 2, function () {
+    this.successArgs = [ { testing: true } ];
+
+    doc.doAction();
+
+    strictEqual(this.syncArgs.model, doc);
+    strictEqual(this.syncArgs.model.get('testing'), true);
+  });
+
+  test('action events are triggered', 7, function () {
     var mockResp = { mock: true };
     this.successArgs = [ mockResp ];
 
@@ -138,9 +279,9 @@
       strictEqual(resp, mockResp);
       ok(options);
     });
-    doc.on('action', function (name, model, resp, options) {
-      equal(name, 'doAction');
+    doc.on('action', function (model, name, resp, options) {
       strictEqual(model, doc);
+      equal(name, 'doAction');
       strictEqual(resp, mockResp);
       ok(options);
     });
@@ -148,31 +289,16 @@
     doc.doAction();
   });
 
-  test('pick attributes to be sent as data and have custom URLs using functions', 5, function () {
-    doc.doSameAction({
-      attrs: function () {
-        return [ 'flag' ];
-      }
-    });
-
-    strictEqual(this.syncArgs.model, doc);
-    equal(this.syncArgs.method, 'read');
-    equal(this.ajaxSettings.type, 'GET');
-    equal(this.ajaxSettings.url, '/test/test1/action');
-    deepEqual(this.ajaxSettings.data, doc.pick('number', 'string', 'flag'));
-  });
-
-  test('name is parsed to build URL', 1, function () {
+  test('name is parsed to build URL', 2, function () {
     var oldParse = Backbone.Do.parseName;
     Backbone.Do.parseName = function(name) {
-      return name.replace(/[A-Z]+/g, function (str) {
-        return '-' + str.toLowerCase();
-      });
+      ok(true);
+      return name;
     };
 
-    doc.camelCase();
+    doc.doAnything();
 
-    equal(this.ajaxSettings.url, '/test/test1/camel-case');
+    equal(this.ajaxSettings.url, '/test/test1/doAnything');
 
     Backbone.Do.parseName = oldParse;
   });

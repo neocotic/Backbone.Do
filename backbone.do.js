@@ -31,8 +31,9 @@
   var Do = Backbone.Do = function(model) {
     var actions = _.result(model, 'actions');
     _.each(actions, function (action, name) {
+      action = _.result(actions, name);
       model[name] = function (options) {
-        return Do._perform(model, action, name, options);
+        return perform(model, action, name, options);
       };
     });
 
@@ -43,7 +44,7 @@
   Do.defaultMethod = 'GET';
 
   // Current version of the `Do` plugin.
-  Do.VERSION = '0.1.0alpha';
+  Do.VERSION = '0.1.0';
 
   // Map from HTTP to CRUD for our reverse usage of `Backbone.sync`.
   var typeMap = {
@@ -57,12 +58,6 @@
   // Helpers
   // -------
 
-  // Extract and parse any attributes declared on a given object.
-  function getAttributes(obj) {
-    var attrs = _.result(obj, 'attrs');
-    return _.isString(attrs) ? attrs.split(/\s+/) : attrs;
-  }
-
   // Wrap an optional error callback with a fallback error event.
   function wrapError(model, options) {
     var error = options.error;
@@ -75,15 +70,16 @@
   // Actions
   // -------
 
-  // Allow users to change how actions with no `url` specified have their URL path derived by
-  // overriding this function which, by default, simply returns the value of it's only parameter.
-  Do.parseName = function(name) {
-    return name;
-  };
+  // Extract and parse any attributes declared on a given object.
+  function getAttributes(obj) {
+    var attrs = _.result(obj, 'attrs');
+    if (_.isString(attrs)) attrs = attrs.split(/\s+/);
+    return attrs || [];
+  }
 
   // Merge the options specified for a specific action invocation with it's default options.
-  Do._getOptions = function(model, action, name, options) {
-    options = _.extend({}, action.options, options);
+  function getOptions(model, action, name, options) {
+    options = _.extend({ validate: true }, action, options);
 
     // Merge attributes defined on the `action` as well as any on current `options`.
     var attrs = _.union(getAttributes(action), getAttributes(options));
@@ -99,20 +95,28 @@
     // If the `action` has no URL specified, `parseName` is called to derive the path based on the
     // action's `name`.
     var base = _.result(model, 'url'),
-        path = _.result(action, 'url') || Do.parseName(name),
+        path = _.result(options, 'url') || Do.parseName(name),
         separator = base[base.length - 1] === '/' ? '' : '/';
     options.url = base + separator + encodeURIComponent(path);
 
-    // TODO: Remove `action.options` and just use `action` as the options
-    // TODO: Omit unecessary options (e.g. `attrs`, `method`)
+    // Reverse the method-type mapping that Backbone uses to determine what HTTP method is used for
+    // the request, falling back on `defaultMethod` if required.
+    var type = _.result(options, 'method');
+    options.method = typeMap[type && type.toUpperCase()] || typeMap[Do.defaultMethod];
 
     return options;
+  }
+
+  // Allow users to change how actions with no `url` specified have their URL path derived by
+  // overriding this function which, by default, simply returns the value of it's only parameter.
+  Do.parseName = function(name) {
+    return name;
   };
 
   // Sync the `model` to the server based on the invoked `action`.
   // If the server returns an attributes hash that differs, the model's state will be `set` again.
-  Do._perform = function(model, action, name, options) {
-    options = Do._getOptions(model, action, name, options);
+  function perform(model, action, name, options) {
+    options = getOptions(model, action, name, options);
 
     var attributes = model.attributes;
 
@@ -130,16 +134,12 @@
 
       if (success) success(model, resp, options);
       model.trigger('action:' + name, model, resp, options);
-      model.trigger('action', name, model, resp, options);
+      model.trigger('action', model, name, resp, options);
     };
     wrapError(model, options);
 
-    // Reverse the method-type mapping that Backbone uses to determine what HTTP method is used for
-    // the request, falling back on `defaultMethod` if required.
-    var method = options.method && options.method.toUpperCase(),
-        type   = typeMap[method] || typeMap[Do.defaultMethod];
     // Use the logic within `Backbone.sync` to our advantage.
-    return model.sync(type, model, options);
-  };
+    return model.sync(options.method, model, options);
+  }
 
 }));
