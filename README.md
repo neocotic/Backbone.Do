@@ -98,7 +98,7 @@ Type(s): `String` `String[]`
 
 A subset of attributes to be picked from the model and sent to the server.
 
-**Note:** If `attrs` is used, the resulting attributes hash will replace the `data` confiugration.
+**Note:** If `attrs` is used, the resulting attributes hash will replace the `data` configuration.
 
 ``` javascript
 var Book = Backbone.Model.extend({
