@@ -47,6 +47,10 @@ var Book = Backbone.Model.extend({
     }
   },
 
+  defaults: function() {
+    return { pages: [] };
+  },
+
   initialize: function() {
     Backbone.Do(this);
   }
@@ -89,13 +93,15 @@ that action.
 ``` javascript
 var ShoppingCart = Backbone.View.extend({
   events: {
-    'click :submit': 'checkout'
+    'click .checkout-btn': 'checkout'
   },
 
   checkout: function() {
-    this.model.buy({
-      quantity: this.$('input.quantity').val()
-    });
+    var data = {
+      quantity: this.$('input.quantity-field').val()
+    };
+
+    this.model.buy({ data: data });
   }
 });
 ```
