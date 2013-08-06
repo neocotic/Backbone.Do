@@ -12,13 +12,6 @@
 
 It can be used normally in any browser as well as in the [node.js][] environment.
 
-# Important
-
-This [Backbone][] plugin is still in development as is not yet complete. Please check again in the
-near future.
-
-The majority of work remaining involves completing the unit tests and the documentation.
-
 ## Install
 
 Install using the package manager for your desired environment(s):
