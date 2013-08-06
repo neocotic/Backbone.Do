@@ -81,15 +81,13 @@
   function getOptions(model, action, name, options) {
     options = _.extend({ validate: true }, action, options);
 
-    // Merge attributes defined on the `action` as well as any on current `options`.
-    var attrs = _.union(getAttributes(action), getAttributes(options));
     // The contents request to the server will either be a key-value map of the specified
     // attributes, if any, or the merged `data` from the `action` and the current `options`.
-    if (_.isEmpty(attrs)) {
-      options.data = _.extend({}, _.result(action, 'data'), _.result(options, 'data'));
-    } else {
-      options.data = model.pick(attrs);
-    }
+    var data = _.extend({}, _.result(action, 'data'), _.result(options, 'data'));
+    // If no `data` was provided, merge attributes defined on the `action` as well as any on
+    // current `options`.
+    if (_.isEmpty(data)) data = model.pick(_.union(getAttributes(action), getAttributes(options)));
+    options.data = data;
 
     // Build the URL to which the request will be sent when the action is invoked.
     // If the `action` has no URL specified, `parseName` is called to derive the path based on the

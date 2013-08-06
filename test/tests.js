@@ -220,11 +220,12 @@
     deepEqual(this.ajaxSettings.data, doc.pick('number', 'string', 'flag'));
   });
 
-  test('pick attributes have priority over data', 2, function () {
-    doc.doAction({ foo: 'bar' });
+  test('data has priority over pick attributes', 2, function () {
+    var data = { foo: 'bar' };
+    doc.doAction({ data: data });
 
     strictEqual(this.syncArgs.model, doc);
-    deepEqual(this.ajaxSettings.data, doc.pick('number', 'string'));
+    deepEqual(this.ajaxSettings.data, data);
   });
 
   test('data can be sent', 2, function () {

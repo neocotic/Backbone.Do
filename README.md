@@ -120,7 +120,7 @@ Type(s): `String` `String[]`
 
 A subset of attributes to be picked from the model and sent to the server.
 
-**Note:** If `attrs` is used, the resulting attributes hash will replace the `data` configuration.
+**Note:** If the `data` configuration is used, this will be ignored.
 
 ``` javascript
 var Book = Backbone.Model.extend({
@@ -148,8 +148,8 @@ Type(s): `Object`
 
 JSON-ifiable value that is to be sent to the server in the request body.
 
-**Note:** If the `attrs` configuration is used, this will be replaced by the resulting attributes
-hash.
+**Note:** If the `attrs` configuration is used and no `data` is specified, the resulting attributes
+hash will replace the populate this value.
 
 ``` javascript
 var Book = Backbone.Model.extend({
