@@ -138,12 +138,15 @@
   function perform(model, action, name, options) {
     options = getOptions(model, action, name, options);
 
-    var attributes = model.attributes;
+    var method = options.method,
+        attributes = model.attributes;
+
+    // Try to normalise the options to reduce possible conflicts.
+    options = _.omit(options, 'attrs', 'method');
+    if (_.isUndefined(options.parse)) options.parse = true;
 
     // After a successful server-side action, the client is (optionally) updated with the
     // server-side state.
-    if (_.isUndefined(options.parse)) options.parse = true;
-
     var success = options.success;
     options.success = function(resp) {
       // Ensure that the model's attributes are restored during synchronous actions.
@@ -159,7 +162,7 @@
     wrapError(model, options);
 
     // Use the logic within `Backbone.sync` to our advantage.
-    return model.sync(options.method, model, _.omit(options, 'attrs', 'method'));
+    return model.sync(method, model, options);
   }
 
 }));
