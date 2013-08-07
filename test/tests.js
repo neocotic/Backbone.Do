@@ -243,6 +243,14 @@
     equal(this.ajaxSettings.data, JSON.stringify(_.extend({ foo: 'bar' }, data)));
   });
 
+  test('data is not stringified for GET methods', 2, function () {
+    var data = { foo: 'bar' };
+    doc.doGet({ data: data });
+
+    strictEqual(this.syncArgs.model, doc);
+    deepEqual(this.ajaxSettings.data, data);
+  });
+
   test('content type is correct', 2, function () {
     doc.doAnything();
 
@@ -255,7 +263,7 @@
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.ajaxSettings.contentType, 'application/x-www-form-urlencoded');
-    deepEqual(this.ajaxSettings.data, { data: { foo: 'bar' } });
+    deepEqual(this.ajaxSettings.data, { data: JSON.stringify({ foo: 'bar' }) });
   });
 
   test('HTTP methods can be emulated', 4, function () {
@@ -264,7 +272,7 @@
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.ajaxSettings.contentType, 'application/x-www-form-urlencoded');
-    deepEqual(this.ajaxSettings.data, { data: data, _method: 'PUT' });
+    deepEqual(this.ajaxSettings.data, { data: JSON.stringify(data), _method: 'PUT' });
     deepEqual(this.ajaxSettings.type, 'POST');
   });
 

@@ -89,20 +89,12 @@
       validate:    true
     }, action, options);
 
-    // The contents request to the server will either be a key-value map of the specified
-    // attributes, if any, or the merged `data` from the `action` and the current `options`.
-    var data = _.extend({}, _.result(action, 'data'), _.result(options, 'data'));
-    // If no `data` was provided, merge attributes defined on the `action` as well as any on
-    // current `options`.
-    if (_.isEmpty(data)) data = model.pick(_.union(getAttributes(action), getAttributes(options)));
-    // Ensure Backbone's JSON emulation is still supported, but using a `data` property instead of
-    // `model`.
-    if (options.emulateJSON) {
-      options.contentType = 'application/x-www-form-urlencoded';
-      options.data = _.isEmpty(data) ? {} : { data: data };
-    } else {
-      options.data = JSON.stringify(data);
-    }
+    // Reverse the method-type mapping that Backbone uses to determine what HTTP method is used for
+    // the request, falling back on `defaultMethod` if required.
+    var type = _.result(options, 'method');
+    if (type)           type = type.toUpperCase();
+    if (!typeMap[type]) type = Do.defaultMethod;
+    options.method = typeMap[type];
 
     // Build the URL to which the request will be sent when the action is invoked.
     // If the `action` has no URL specified, `parseName` is called to derive the path based on the
@@ -112,12 +104,23 @@
         separator = base[base.length - 1] === '/' ? '' : '/';
     options.url = base + separator + encodeURIComponent(path);
 
-    // Reverse the method-type mapping that Backbone uses to determine what HTTP method is used for
-    // the request, falling back on `defaultMethod` if required.
-    var type = _.result(options, 'method');
-    if (type)           type = type.toUpperCase();
-    if (!typeMap[type]) type = Do.defaultMethod;
-    options.method = typeMap[type];
+    // The contents request to the server will either be a key-value map of the specified
+    // attributes, if any, or the merged `data` from the `action` and the current `options`.
+    var data = _.extend({}, _.result(action, 'data'), _.result(options, 'data'));
+    // If no `data` was provided, merge attributes defined on the `action` as well as any on
+    // current `options`.
+    if (_.isEmpty(data)) data = model.pick(_.union(getAttributes(action), getAttributes(options)));
+    options.data = _.isEmpty(data) ? null : data;
+
+    // Ensure that the request data is sent in the correct fashion.
+    if (options.data && type !== 'GET') options.data = JSON.stringify(options.data);
+
+    // Ensure Backbone's JSON emulation is still supported, but using a `data` property instead of
+    // `model`.
+    if (options.emulateJSON) {
+      options.contentType = 'application/x-www-form-urlencoded';
+      options.data = options.data ? { data: options.data } : {};
+    }
 
     // Ensure Backbone's HTTP emulation is still supported.
     if (options.emulateHTTP && options.emulateJSON && rEmulatedTypes.test(type)) {
