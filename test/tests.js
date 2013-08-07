@@ -161,7 +161,7 @@
     strictEqual(this.syncArgs.model, doc);
     equal(this.ajaxSettings.type, 'POST');
     equal(this.ajaxSettings.url, '/test/test1/complex-data');
-    deepEqual(this.ajaxSettings.data, { foo: 'bar' });
+    deepEqual(this.ajaxSettings.data, JSON.stringify({ foo: 'bar' }));
   });
 
   test('known configurations can be functions (excl. data)', 4, function () {
@@ -170,7 +170,7 @@
     strictEqual(this.syncArgs.model, doc);
     equal(this.ajaxSettings.type, 'PUT');
     equal(this.ajaxSettings.url, '/test/test1/complex-attrs');
-    deepEqual(this.ajaxSettings.data, doc.pick('number', 'string'));
+    deepEqual(this.ajaxSettings.data, JSON.stringify(doc.pick('number', 'string')));
   });
 
   test('actions can use a custom URL path', 4, function () {
@@ -196,28 +196,28 @@
     doc.doAction();
 
     strictEqual(this.syncArgs.model, doc);
-    deepEqual(this.ajaxSettings.data, doc.pick('number', 'string'));
+    equal(this.ajaxSettings.data, JSON.stringify(doc.pick('number', 'string')));
   });
 
   test('pick attributes in array can be sent as data', 2, function () {
     doc.doSameAction();
 
     strictEqual(this.syncArgs.model, doc);
-    deepEqual(this.ajaxSettings.data, doc.pick('number', 'string'));
+    equal(this.ajaxSettings.data, JSON.stringify(doc.pick('number', 'string')));
   });
 
   test('merged pick attributes as strings can be sent as data', 2, function () {
     doc.doAction({ attrs: 'flag' });
 
     strictEqual(this.syncArgs.model, doc);
-    deepEqual(this.ajaxSettings.data, doc.pick('number', 'string', 'flag'));
+    equal(this.ajaxSettings.data, JSON.stringify(doc.pick('number', 'string', 'flag')));
   });
 
   test('merged pick attributes in arrays can be sent as data', 2, function () {
     doc.doAction({ attrs: [ 'flag' ] });
 
     strictEqual(this.syncArgs.model, doc);
-    deepEqual(this.ajaxSettings.data, doc.pick('number', 'string', 'flag'));
+    equal(this.ajaxSettings.data, JSON.stringify(doc.pick('number', 'string', 'flag')));
   });
 
   test('data has priority over pick attributes', 2, function () {
@@ -225,14 +225,14 @@
     doc.doAction({ data: data });
 
     strictEqual(this.syncArgs.model, doc);
-    deepEqual(this.ajaxSettings.data, data);
+    equal(this.ajaxSettings.data, JSON.stringify(data));
   });
 
   test('data can be sent', 2, function () {
     doc.doActionWithData();
 
     strictEqual(this.syncArgs.model, doc);
-    deepEqual(this.ajaxSettings.data, { foo: 'bar' });
+    equal(this.ajaxSettings.data, JSON.stringify({ foo: 'bar' }));
   });
 
   test('merge data to be sent', 2, function () {
@@ -240,7 +240,32 @@
     doc.doActionWithData({ data: data });
 
     strictEqual(this.syncArgs.model, doc);
-    deepEqual(this.ajaxSettings.data, _.extend({ foo: 'bar' }, data));
+    equal(this.ajaxSettings.data, JSON.stringify(_.extend({ foo: 'bar' }, data)));
+  });
+
+  test('content type is correct', 2, function () {
+    doc.doAnything();
+
+    strictEqual(this.syncArgs.model, doc);
+    equal(this.ajaxSettings.contentType, 'application/json');
+  });
+
+  test('JSON can be emulated', 3, function () {
+    doc.doActionWithData({ emulateJSON: true });
+
+    strictEqual(this.syncArgs.model, doc);
+    equal(this.ajaxSettings.contentType, 'application/x-www-form-urlencoded');
+    deepEqual(this.ajaxSettings.data, { data: { foo: 'bar' } });
+  });
+
+  test('HTTP methods can be emulated', 4, function () {
+    var data = { foo: 'bar' };
+    doc.doPut({ data: data, emulateHTTP: true, emulateJSON: true });
+
+    strictEqual(this.syncArgs.model, doc);
+    equal(this.ajaxSettings.contentType, 'application/x-www-form-urlencoded');
+    deepEqual(this.ajaxSettings.data, { data: data, _method: 'PUT' });
+    deepEqual(this.ajaxSettings.type, 'POST');
   });
 
   test('validate before set', 2, function () {

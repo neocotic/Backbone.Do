@@ -46,6 +46,9 @@
   // Current version of the `Do` plugin.
   Do.VERSION = '0.1.2';
 
+  // Regular expression to test for HTTP methods that can be emulated.
+  var rEmulatedTypes = /^(DELETE|PATCH|PUT)$/;
+
   // Map from HTTP to CRUD for our reverse usage of `Backbone.sync`.
   var typeMap = {
     POST:   'create',
@@ -79,7 +82,12 @@
 
   // Merge the options specified for a specific action invocation with it's default options.
   function getOptions(model, action, name, options) {
-    options = _.extend({ validate: true }, action, options);
+    options = _.extend({
+      contentType: 'application/json',
+      emulateHTTP: Backbone.emulateHTTP,
+      emulateJSON: Backbone.emulateJSON,
+      validate:    true
+    }, action, options);
 
     // The contents request to the server will either be a key-value map of the specified
     // attributes, if any, or the merged `data` from the `action` and the current `options`.
@@ -87,7 +95,14 @@
     // If no `data` was provided, merge attributes defined on the `action` as well as any on
     // current `options`.
     if (_.isEmpty(data)) data = model.pick(_.union(getAttributes(action), getAttributes(options)));
-    options.data = data;
+    // Ensure Backbone's JSON emulation is still supported, but using a `data` property instead of
+    // `model`.
+    if (options.emulateJSON) {
+      options.contentType = 'application/x-www-form-urlencoded';
+      options.data = _.isEmpty(data) ? {} : { data: data };
+    } else {
+      options.data = JSON.stringify(data);
+    }
 
     // Build the URL to which the request will be sent when the action is invoked.
     // If the `action` has no URL specified, `parseName` is called to derive the path based on the
@@ -100,7 +115,14 @@
     // Reverse the method-type mapping that Backbone uses to determine what HTTP method is used for
     // the request, falling back on `defaultMethod` if required.
     var type = _.result(options, 'method');
-    options.method = typeMap[type && type.toUpperCase()] || typeMap[Do.defaultMethod];
+    if (type)           type = type.toUpperCase();
+    if (!typeMap[type]) type = Do.defaultMethod;
+    options.method = typeMap[type];
+
+    // Ensure Backbone's HTTP emulation is still supported.
+    if (options.emulateHTTP && options.emulateJSON && rEmulatedTypes.test(type)) {
+      options.data._method = type;
+    }
 
     return options;
   }
@@ -137,7 +159,7 @@
     wrapError(model, options);
 
     // Use the logic within `Backbone.sync` to our advantage.
-    return model.sync(options.method, model, options);
+    return model.sync(options.method, model, _.omit(options, 'attrs', 'method'));
   }
 
 }));
