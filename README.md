@@ -44,8 +44,9 @@ var Book = Backbone.Model.extend({
     },
 
     getPages: {
-      url:   'pages',
-      attrs: 'pageCount'
+      url:    'pages',
+      attrs:  'pageCount',
+      method: 'GET'
     }
   },
 
@@ -79,11 +80,10 @@ previous example the following requests would have been sent to the server:
 
 ```
 POST http://example.com/books/hobbit/buy
-GET  http://example.com/books/hobbit/pages
+GET  http://example.com/books/hobbit/pages?pageCount=310
 ```
 
-The second request would have been sent `pageCount` key-value pair from the model in the request
-body.
+The first request would have been sent the JSON-formatted data in the request body.
 
 Each action function accepts optional options that can overload the default configurations for
 that action.

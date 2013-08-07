@@ -44,7 +44,7 @@
   Do.defaultMethod = 'POST';
 
   // Current version of the `Do` plugin.
-  Do.VERSION = '0.1.2';
+  Do.VERSION = '0.1.3';
 
   // Regular expression to test for HTTP methods that can be emulated.
   var rEmulatedTypes = /^(DELETE|PATCH|PUT)$/;
