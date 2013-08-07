@@ -33,7 +33,7 @@
     _.each(actions, function (action, name) {
       action = _.result(actions, name);
       model[name] = function (options) {
-        return perform(model, action, name, options);
+        return Do.perform(model, action, name, options);
       };
     });
 
@@ -41,7 +41,7 @@
   };
 
   // Default HTTP method used when no/invalid method was specified.
-  Do.defaultMethod = 'GET';
+  Do.defaultMethod = 'POST';
 
   // Current version of the `Do` plugin.
   Do.VERSION = '0.1.2';
@@ -81,7 +81,7 @@
   }
 
   // Merge the options specified for a specific action invocation with it's default options.
-  function getOptions(model, action, name, options) {
+  Do.getOptions = function(model, action, name, options) {
     options = _.extend({
       contentType: 'application/json',
       emulateHTTP: Backbone.emulateHTTP,
@@ -125,7 +125,7 @@
     }
 
     return options;
-  }
+  };
 
   // Allow users to change how actions with no `url` specified have their URL path derived by
   // overriding this function which, by default, simply returns the value of it's only parameter.
@@ -135,8 +135,8 @@
 
   // Sync the `model` to the server based on the invoked `action`.
   // If the server returns an attributes hash that differs, the model's state will be `set` again.
-  function perform(model, action, name, options) {
-    options = getOptions(model, action, name, options);
+  Do.perform = function(model, action, name, options) {
+    options = Do.getOptions(model, action, name, options);
 
     var method = options.method,
         attributes = model.attributes;
@@ -163,6 +163,6 @@
 
     // Use the logic within `Backbone.sync` to our advantage.
     return model.sync(method, model, options);
-  }
+  };
 
 }));

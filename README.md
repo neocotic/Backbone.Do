@@ -38,7 +38,9 @@ var Book = Backbone.Model.extend({
 
   actions: {
     buy: {
-      method: 'POST'
+      data: {
+        referrer: 'Amazon'
+      }
     },
 
     getPages: {
@@ -191,10 +193,10 @@ an appropriate path based on the action's name.
 #### `defaultMethod`
 
 The default HTTP method used by requests that don't specify one. This can be any of the same values
-for the [method](#method) configuration but, by default, is `GET`.
+for the [method](#method) configuration but, by default, is `POST`.
 
 ``` javascript
-Backbone.Do.defaultMethod = 'POST';
+Backbone.Do.defaultMethod = 'PUT';
 ```
 
 #### `parseName(name)`

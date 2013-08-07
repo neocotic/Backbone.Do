@@ -177,8 +177,8 @@
     doc.doAction();
 
     strictEqual(this.syncArgs.model, doc);
-    equal(this.syncArgs.method, 'read');
-    equal(this.ajaxSettings.type, 'GET');
+    equal(this.syncArgs.method, 'create');
+    equal(this.ajaxSettings.type, 'POST');
     equal(this.ajaxSettings.url, '/test/test1/action');
   });
 
@@ -187,8 +187,8 @@
     doc.doAction({ url: path });
 
     strictEqual(this.syncArgs.model, doc);
-    equal(this.syncArgs.method, 'read');
-    equal(this.ajaxSettings.type, 'GET');
+    equal(this.syncArgs.method, 'create');
+    equal(this.ajaxSettings.type, 'POST');
     equal(this.ajaxSettings.url, '/test/test1/' + encodeURIComponent(path));
   });
 
@@ -357,24 +357,6 @@
     equal(this.ajaxSettings.url, '/test/test1/doGet');
   });
 
-  test('GET is used as default action if none was specified', 4, function () {
-    doc.doAnything();
-
-    strictEqual(this.syncArgs.model, doc);
-    equal(this.syncArgs.method, 'read');
-    equal(this.ajaxSettings.type, 'GET');
-    equal(this.ajaxSettings.url, '/test/test1/doAnything');
-  });
-
-  test('GET is used as default action if invalid method was specified', 4, function () {
-    doc.doSomethingWeird();
-
-    strictEqual(this.syncArgs.model, doc);
-    equal(this.syncArgs.method, 'read');
-    equal(this.ajaxSettings.type, 'GET');
-    equal(this.ajaxSettings.url, '/test/test1/doSomethingWeird');
-  });
-
   test('PATCH is a valid method action', 4, function () {
     doc.doPatch();
 
@@ -391,6 +373,24 @@
     equal(this.syncArgs.method, 'create');
     equal(this.ajaxSettings.type, 'POST');
     equal(this.ajaxSettings.url, '/test/test1/doPost');
+  });
+
+  test('POST is used as default action if none was specified', 4, function () {
+    doc.doAnything();
+
+    strictEqual(this.syncArgs.model, doc);
+    equal(this.syncArgs.method, 'create');
+    equal(this.ajaxSettings.type, 'POST');
+    equal(this.ajaxSettings.url, '/test/test1/doAnything');
+  });
+
+  test('POST is used as default action if invalid method was specified', 4, function () {
+    doc.doSomethingWeird();
+
+    strictEqual(this.syncArgs.model, doc);
+    equal(this.syncArgs.method, 'create');
+    equal(this.ajaxSettings.type, 'POST');
+    equal(this.ajaxSettings.url, '/test/test1/doSomethingWeird');
   });
 
   test('PUT is a valid method action', 4, function () {
