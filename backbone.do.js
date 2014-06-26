@@ -1,5 +1,5 @@
 // [Backbone.Do](http://neocotic.com/Backbone.Do)  
-// Copyright (c) 2013 Alasdair Mercer  
+// Copyright (c) 2014 Alasdair Mercer  
 // Freely distributable under the MIT license
 
 (function (root, factory) {
@@ -44,7 +44,7 @@
   Do.defaultMethod = 'POST';
 
   // Current version of the `Do` plugin.
-  Do.VERSION = '0.1.3';
+  Do.VERSION = '0.1.4';
 
   // Regular expression to test for HTTP methods that can be emulated.
   var rEmulatedTypes = /^(DELETE|PATCH|PUT)$/;
