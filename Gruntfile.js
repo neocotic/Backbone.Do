@@ -49,7 +49,8 @@ module.exports = function(grunt) {
         }
       },
       options: {
-        sourceMap: '<%= pkg.name %>.min.map',
+        sourceMap: true,
+        sourceMapName: '<%= pkg.name %>.min.map',
         banner: '/*! Backbone.Do v<%= pkg.version %> | (c) ' +
           '<%= grunt.template.today("yyyy") %> <%= pkg.author.name %> | ' +
           '<%= pkg.licenses[0].type %> License */\n'
