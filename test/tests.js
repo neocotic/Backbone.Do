@@ -182,14 +182,14 @@
     equal(this.ajaxSettings.url, '/test/test1/action');
   });
 
-  test('custom URL paths are encoded', 4, function () {
+  test('custom URL paths are not encoded', 4, function () {
     var path = 'abcdefghijklmnopqrstuvwxyz0123456789!"£$%^&*()=+-_ `|\\,<.>/?;:\'@#~[{]}';
     doc.doAction({ url: path });
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.syncArgs.method, 'create');
     equal(this.ajaxSettings.type, 'POST');
-    equal(this.ajaxSettings.url, '/test/test1/' + encodeURIComponent(path));
+    equal(this.ajaxSettings.url, '/test/test1/' + path);
   });
 
   test('pick attributes as string can be sent as data', 2, function () {
