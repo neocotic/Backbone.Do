@@ -102,7 +102,7 @@
     var base = _.result(model, 'url'),
         path = _.result(options, 'url') || Do.parseName(name),
         separator = base[base.length - 1] === '/' ? '' : '/';
-    options.url = base + separator + encodeURIComponent(path);
+    options.url = base + separator + path;
 
     // The contents request to the server will either be a key-value map of the specified
     // attributes, if any, or the merged `data` from the `action` and the current `options`.
