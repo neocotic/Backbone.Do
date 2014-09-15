@@ -7,7 +7,7 @@
 
   if (typeof exports === 'object') {
     // Export module for Node.js (or similar) environments.
-    module.exports = factory(require('underscore'), require('Backbone'), root);
+    module.exports = factory(require('underscore'), require('backbone'), root);
   } else if (typeof define === 'function' && define.amd) {
     // Register as an anonymous module.
     define([ 'underscore', 'backbone' ], function (_, Backbone) {
