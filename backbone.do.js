@@ -45,23 +45,11 @@
     return Do;
   };
 
-  // Default HTTP method used when no/invalid method was specified.
-  Do.defaultMethod = 'POST';
+  // Default CRUD method used when none is specified.
+  Do.defaultMethod = 'update';
 
   // Current version of the `Do` plugin.
   Do.VERSION = '0.1.4';
-
-  // Regular expression to test for HTTP methods that can be emulated.
-  var rEmulatedTypes = /^(DELETE|PATCH|PUT)$/;
-
-  // Map from HTTP to CRUD for our reverse usage of `Backbone.sync`.
-  var typeMap = {
-    POST:   'create',
-    PUT:    'update',
-    PATCH:  'patch',
-    DELETE: 'delete',
-    GET:    'read'
-  };
 
   // Helpers
   // -------
@@ -91,20 +79,9 @@
 
   // Merge the options specified for a specific action invocation with it's default options.
   Do.getOptions = function(model, action, name, data, options) {
-    options = _.extend({
-      contentType: 'application/json',
-      emulateHTTP: Backbone.emulateHTTP,
-      emulateJSON: Backbone.emulateJSON,
-      validate:    true
-    }, action, options);
+    options = _.extend({ validate: true }, action, options);
 
-    // Reverse the method-type mapping that Backbone uses to determine what HTTP method is used for the request,
-    // falling back on `defaultMethod` if required.
-    var type = _.result(options, 'method');
-    if (type)           type = type.toUpperCase();
-    if (!typeMap[type]) type = Do.defaultMethod;
-
-    options.method = typeMap[type];
+    options.method = _.result(options, 'method') || Do.defaultMethod;
 
     // Build the URL to which the request will be sent when the action is invoked.
     // If the `action` has no URL specified, `parseName` is called to derive the path based on the action's `name`.
@@ -123,20 +100,6 @@
     if (_.isEmpty(data)) data = model.pick(_.union(getAttributes(action), getAttributes(options)));
 
     options.data = _.isEmpty(data) ? null : data;
-
-    // Ensure that the request data is sent in the correct fashion.
-    if (options.data && type !== 'GET') options.data = JSON.stringify(options.data);
-
-    // Ensure Backbone's JSON emulation is still supported, but using a `data` property instead of `model`.
-    if (options.emulateJSON) {
-      options.contentType = 'application/x-www-form-urlencoded';
-      options.data = options.data ? { data: options.data } : {};
-    }
-
-    // Ensure Backbone's HTTP emulation is still supported.
-    if (options.emulateHTTP && options.emulateJSON && rEmulatedTypes.test(type)) {
-      options.data._method = type;
-    }
 
     return options;
   };
