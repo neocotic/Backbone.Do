@@ -37,10 +37,9 @@
     var actions = _.result(model, 'actions');
 
     _.each(actions, function(action, name) {
-      action = _.result(actions, name);
-      model[name] = function(options) {
-        return Do.perform(model, action, name, options);
-      };
+      if (!_.isUndefined(model[name])) throw new Error('Property already exists with action name: ' + name);
+
+      model[name] = _.partial(Do.perform, model, name);
     });
 
     return Do;
@@ -91,7 +90,7 @@
   };
 
   // Merge the options specified for a specific action invocation with it's default options.
-  Do.getOptions = function(model, action, name, options) {
+  Do.getOptions = function(model, action, name, data, options) {
     options = _.extend({
       contentType: 'application/json',
       emulateHTTP: Backbone.emulateHTTP,
@@ -117,7 +116,8 @@
 
     // The contents request to the server will either be a key-value map of the specified attributes, if any, or the
     // merged `data` from the `action` and the current `options`.
-    var data = _.extend({}, _.result(action, 'data'), _.result(options, 'data'));
+    data = _.isFunction(data) ? data.call(model) : data;
+    data = _.extend({}, _.result(action, 'data'), data);
 
     // If no `data` was provided, merge attributes defined on the `action` as well as any on current `options`.
     if (_.isEmpty(data)) data = model.pick(_.union(getAttributes(action), getAttributes(options)));
@@ -147,10 +147,13 @@
     return name;
   };
 
-  // Sync the `model` to the server based on the invoked `action`.
+  // Sync the `model` to the server based on the action with the given `name`.
   // If the server returns an attributes hash that differs, the model's state will be `set` again.
-  Do.perform = function(model, action, name, options) {
-    options = Do.getOptions(model, action, name, options);
+  Do.perform = function(model, name, data, options) {
+    var action = model.actions[name];
+    action = _.isFunction(action) ? action.call(model) : action;
+
+    options = Do.getOptions(model, action, name, data, options);
 
     var method = options.method;
     var attributes = model.attributes;
