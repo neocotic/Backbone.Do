@@ -1,4 +1,6 @@
-(function () {
+(function() {
+
+  'use strict';
 
   var TestModel = Backbone.Model.extend({
     urlRoot: '/test',
@@ -64,10 +66,11 @@
     }
   });
 
-  function ajax(settings, success) {
+  var ajax = function(settings, success) {
     var xhr = new XMLHttpRequest();
     xhr.open(settings.method, settings.url, true);
-    xhr.onreadystatechange = function () {
+
+    xhr.onreadystatechange = function() {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
           success(xhr.responseText);
@@ -76,11 +79,13 @@
         }
       }
     };
-    xhr.send(settings.data);
-    return xhr;
-  }
 
-  test('Do enables actions', 1, function () {
+    xhr.send(settings.data);
+
+    return xhr;
+  };
+
+  test('Do enables actions', 1, function() {
     var Model = Backbone.Model.extend({
       actions: {
         someAction: {}
@@ -94,7 +99,7 @@
     ok(model.someAction);
   });
 
-  test('no Do no actions', 1, function () {
+  test('no Do no actions', 1, function() {
     var Model = Backbone.Model.extend({
       actions: {
         someAction: {}
@@ -105,7 +110,7 @@
     ok(!model.someAction);
   });
 
-  test('actions can be a function', 1, function () {
+  test('actions can be a function', 1, function() {
     var Model = Backbone.Model.extend({
       actions: function() {
         return {
@@ -121,7 +126,7 @@
     ok(model.someAction);
   });
 
-  test('individual actions can be functions', 2, function () {
+  test('individual actions can be functions', 2, function() {
     var Model = Backbone.Model.extend({
       actions: {
         someAction: function() {
@@ -139,23 +144,23 @@
     ok(model.otherAction);
   });
 
-  asyncTest('version matches bower', 1, function () {
-    ajax({ method: 'GET', url: '../bower.json' }, function (resp) {
+  asyncTest('version matches bower', 1, function() {
+    ajax({ method: 'GET', url: '../bower.json' }, function(resp) {
       var bwr = JSON.parse(resp);
       equal(Backbone.Do.VERSION, bwr.version);
       start();
     });
   });
 
-  asyncTest('version matches npm', 1, function () {
-    ajax({ method: 'GET', url: '../package.json' }, function (resp) {
+  asyncTest('version matches npm', 1, function() {
+    ajax({ method: 'GET', url: '../package.json' }, function(resp) {
       var pkg = JSON.parse(resp);
       equal(Backbone.Do.VERSION, pkg.version);
       start();
     });
   });
 
-  test('known configurations can be functions (excl. attrs)', 4, function () {
+  test('known configurations can be functions (excl. attrs)', 4, function() {
     doc.doComplexWithData();
 
     strictEqual(this.syncArgs.model, doc);
@@ -164,7 +169,7 @@
     deepEqual(this.ajaxSettings.data, JSON.stringify({ foo: 'bar' }));
   });
 
-  test('known configurations can be functions (excl. data)', 4, function () {
+  test('known configurations can be functions (excl. data)', 4, function() {
     doc.doComplexWithAttrs();
 
     strictEqual(this.syncArgs.model, doc);
@@ -173,7 +178,7 @@
     deepEqual(this.ajaxSettings.data, JSON.stringify(doc.pick('number', 'string')));
   });
 
-  test('actions can use a custom URL path', 4, function () {
+  test('actions can use a custom URL path', 4, function() {
     doc.doAction();
 
     strictEqual(this.syncArgs.model, doc);
@@ -182,7 +187,7 @@
     equal(this.ajaxSettings.url, '/test/test1/action');
   });
 
-  test('custom URL paths are not encoded', 4, function () {
+  test('custom URL paths are not encoded', 4, function() {
     var path = 'abcdefghijklmnopqrstuvwxyz0123456789!"£$%^&*()=+-_ `|\\,<.>/?;:\'@#~[{]}';
     doc.doAction({ url: path });
 
@@ -192,35 +197,35 @@
     equal(this.ajaxSettings.url, '/test/test1/' + path);
   });
 
-  test('pick attributes as string can be sent as data', 2, function () {
+  test('pick attributes as string can be sent as data', 2, function() {
     doc.doAction();
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.ajaxSettings.data, JSON.stringify(doc.pick('number', 'string')));
   });
 
-  test('pick attributes in array can be sent as data', 2, function () {
+  test('pick attributes in array can be sent as data', 2, function() {
     doc.doSameAction();
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.ajaxSettings.data, JSON.stringify(doc.pick('number', 'string')));
   });
 
-  test('merged pick attributes as strings can be sent as data', 2, function () {
+  test('merged pick attributes as strings can be sent as data', 2, function() {
     doc.doAction({ attrs: 'flag' });
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.ajaxSettings.data, JSON.stringify(doc.pick('number', 'string', 'flag')));
   });
 
-  test('merged pick attributes in arrays can be sent as data', 2, function () {
+  test('merged pick attributes in arrays can be sent as data', 2, function() {
     doc.doAction({ attrs: [ 'flag' ] });
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.ajaxSettings.data, JSON.stringify(doc.pick('number', 'string', 'flag')));
   });
 
-  test('data has priority over pick attributes', 2, function () {
+  test('data has priority over pick attributes', 2, function() {
     var data = { foo: 'bar' };
     doc.doAction({ data: data });
 
@@ -228,14 +233,14 @@
     equal(this.ajaxSettings.data, JSON.stringify(data));
   });
 
-  test('data can be sent', 2, function () {
+  test('data can be sent', 2, function() {
     doc.doActionWithData();
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.ajaxSettings.data, JSON.stringify({ foo: 'bar' }));
   });
 
-  test('merge data to be sent', 2, function () {
+  test('merge data to be sent', 2, function() {
     var data = { fu: 'baz' };
     doc.doActionWithData({ data: data });
 
@@ -243,7 +248,7 @@
     equal(this.ajaxSettings.data, JSON.stringify(_.extend({ foo: 'bar' }, data)));
   });
 
-  test('data is not stringified for GET methods', 2, function () {
+  test('data is not stringified for GET methods', 2, function() {
     var data = { foo: 'bar' };
     doc.doGet({ data: data });
 
@@ -251,14 +256,14 @@
     deepEqual(this.ajaxSettings.data, data);
   });
 
-  test('content type is correct', 2, function () {
+  test('content type is correct', 2, function() {
     doc.doAnything();
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.ajaxSettings.contentType, 'application/json');
   });
 
-  test('JSON can be emulated', 3, function () {
+  test('JSON can be emulated', 3, function() {
     doc.doActionWithData({ emulateJSON: true });
 
     strictEqual(this.syncArgs.model, doc);
@@ -266,7 +271,7 @@
     deepEqual(this.ajaxSettings.data, { data: JSON.stringify({ foo: 'bar' }) });
   });
 
-  test('HTTP methods can be emulated', 4, function () {
+  test('HTTP methods can be emulated', 4, function() {
     var data = { foo: 'bar' };
     doc.doPut({ data: data, emulateHTTP: true, emulateJSON: true });
 
@@ -276,7 +281,7 @@
     deepEqual(this.ajaxSettings.type, 'POST');
   });
 
-  test('validate before set', 2, function () {
+  test('validate before set', 2, function() {
     var errorMessage = 'Invalid!';
     this.successArgs = [ { valid: false } ];
 
@@ -285,7 +290,7 @@
     };
 
     var lastError;
-    doc.on('invalid', function (model, error) {
+    doc.on('invalid', function(model, error) {
       lastError = error;
     });
 
@@ -295,7 +300,7 @@
     equal(doc.validationError, errorMessage);
   });
 
-  test('set after action', 2, function () {
+  test('set after action', 2, function() {
     this.successArgs = [ { testing: true } ];
 
     doc.doAction();
@@ -304,16 +309,16 @@
     strictEqual(this.syncArgs.model.get('testing'), true);
   });
 
-  test('action events are triggered', 7, function () {
+  test('action events are triggered', 7, function() {
     var mockResp = { mock: true };
     this.successArgs = [ mockResp ];
 
-    doc.on('action:doAction', function (model, resp, options) {
+    doc.on('action:doAction', function(model, resp, options) {
       strictEqual(model, doc);
       strictEqual(resp, mockResp);
       ok(options);
     });
-    doc.on('action', function (model, name, resp, options) {
+    doc.on('action', function(model, name, resp, options) {
       strictEqual(model, doc);
       equal(name, 'doAction');
       strictEqual(resp, mockResp);
@@ -323,7 +328,7 @@
     doc.doAction();
   });
 
-  test('name is parsed to build URL', 2, function () {
+  test('name is parsed to build URL', 2, function() {
     var oldParse = Backbone.Do.parseName;
     Backbone.Do.parseName = function(name) {
       ok(true);
@@ -337,8 +342,8 @@
     Backbone.Do.parseName = oldParse;
   });
 
-  test('perform triggers error event when an error occurs', 1, function () {
-    doc.on('error', function () {
+  test('perform triggers error event when an error occurs', 1, function() {
+    doc.on('error', function() {
       ok(true);
     });
     doc.sync = function(method, model, options) {
@@ -347,7 +352,7 @@
     doc.doAnything();
   });
 
-  test('DELETE is a valid method action', 4, function () {
+  test('DELETE is a valid method action', 4, function() {
     doc.doDelete();
 
     strictEqual(this.syncArgs.model, doc);
@@ -356,7 +361,7 @@
     equal(this.ajaxSettings.url, '/test/test1/doDelete');
   });
 
-  test('GET is a valid method action', 4, function () {
+  test('GET is a valid method action', 4, function() {
     doc.doGet();
 
     strictEqual(this.syncArgs.model, doc);
@@ -365,7 +370,7 @@
     equal(this.ajaxSettings.url, '/test/test1/doGet');
   });
 
-  test('PATCH is a valid method action', 4, function () {
+  test('PATCH is a valid method action', 4, function() {
     doc.doPatch();
 
     strictEqual(this.syncArgs.model, doc);
@@ -374,7 +379,7 @@
     equal(this.ajaxSettings.url, '/test/test1/doPatch');
   });
 
-  test('POST is a valid method action', 4, function () {
+  test('POST is a valid method action', 4, function() {
     doc.doPost();
 
     strictEqual(this.syncArgs.model, doc);
@@ -383,7 +388,7 @@
     equal(this.ajaxSettings.url, '/test/test1/doPost');
   });
 
-  test('POST is used as default action if none was specified', 4, function () {
+  test('POST is used as default action if none was specified', 4, function() {
     doc.doAnything();
 
     strictEqual(this.syncArgs.model, doc);
@@ -392,7 +397,7 @@
     equal(this.ajaxSettings.url, '/test/test1/doAnything');
   });
 
-  test('POST is used as default action if invalid method was specified', 4, function () {
+  test('POST is used as default action if invalid method was specified', 4, function() {
     doc.doSomethingWeird();
 
     strictEqual(this.syncArgs.model, doc);
@@ -401,7 +406,7 @@
     equal(this.ajaxSettings.url, '/test/test1/doSomethingWeird');
   });
 
-  test('PUT is a valid method action', 4, function () {
+  test('PUT is a valid method action', 4, function() {
     doc.doPut();
 
     strictEqual(this.syncArgs.model, doc);
@@ -410,4 +415,4 @@
     equal(this.ajaxSettings.url, '/test/test1/doPut');
   });
 
-}).call(this);
+})();
