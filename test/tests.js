@@ -110,6 +110,22 @@
     ok(!model.someAction);
   });
 
+  test('action names must not already exist on Model prototype', 1, function() {
+    var model;
+    var Model = Backbone.Model.extend({
+      actions: {
+        destroy: {}
+      },
+      initialize: function() {
+        Backbone.Do(this);
+      }
+    });
+
+    throws(function() {
+      model = new Model();
+    }, Error);
+  });
+
   test('actions can be a function', 1, function() {
     var Model = Backbone.Model.extend({
       actions: function() {
@@ -189,7 +205,7 @@
 
   test('custom URL paths are not encoded', 4, function() {
     var path = 'abcdefghijklmnopqrstuvwxyz0123456789!"£$%^&*()=+-_ `|\\,<.>/?;:\'@#~[{]}';
-    doc.doAction({ url: path });
+    doc.doAction(null, { url: path });
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.syncArgs.method, 'create');
@@ -212,14 +228,14 @@
   });
 
   test('merged pick attributes as strings can be sent as data', 2, function() {
-    doc.doAction({ attrs: 'flag' });
+    doc.doAction(null, { attrs: 'flag' });
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.ajaxSettings.data, JSON.stringify(doc.pick('number', 'string', 'flag')));
   });
 
   test('merged pick attributes in arrays can be sent as data', 2, function() {
-    doc.doAction({ attrs: [ 'flag' ] });
+    doc.doAction(null, { attrs: [ 'flag' ] });
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.ajaxSettings.data, JSON.stringify(doc.pick('number', 'string', 'flag')));
@@ -227,7 +243,7 @@
 
   test('data has priority over pick attributes', 2, function() {
     var data = { foo: 'bar' };
-    doc.doAction({ data: data });
+    doc.doAction(data);
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.ajaxSettings.data, JSON.stringify(data));
@@ -242,7 +258,7 @@
 
   test('merge data to be sent', 2, function() {
     var data = { fu: 'baz' };
-    doc.doActionWithData({ data: data });
+    doc.doActionWithData(data);
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.ajaxSettings.data, JSON.stringify(_.extend({ foo: 'bar' }, data)));
@@ -250,7 +266,7 @@
 
   test('data is not stringified for GET methods', 2, function() {
     var data = { foo: 'bar' };
-    doc.doGet({ data: data });
+    doc.doGet(data);
 
     strictEqual(this.syncArgs.model, doc);
     deepEqual(this.ajaxSettings.data, data);
@@ -264,7 +280,7 @@
   });
 
   test('JSON can be emulated', 3, function() {
-    doc.doActionWithData({ emulateJSON: true });
+    doc.doActionWithData(null, { emulateJSON: true });
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.ajaxSettings.contentType, 'application/x-www-form-urlencoded');
@@ -273,7 +289,7 @@
 
   test('HTTP methods can be emulated', 4, function() {
     var data = { foo: 'bar' };
-    doc.doPut({ data: data, emulateHTTP: true, emulateJSON: true });
+    doc.doPut(data, { emulateHTTP: true, emulateJSON: true });
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.ajaxSettings.contentType, 'application/x-www-form-urlencoded');
