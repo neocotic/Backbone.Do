@@ -81,6 +81,8 @@
   Do.getOptions = function(model, action, name, data, options) {
     options = _.extend({ validate: true }, action, options);
 
+    if (_.isUndefined(options.parse)) options.parse = true;
+
     options.method = _.result(options, 'method') || Do.defaultMethod;
 
     // Build the URL to which the request will be sent when the action is invoked.
@@ -97,7 +99,18 @@
     data = _.extend({}, _.result(action, 'data'), data);
 
     // If no `data` was provided, merge attributes defined on the `action` as well as any on current `options`.
-    if (_.isEmpty(data)) data = model.pick(_.union(getAttributes(action), getAttributes(options)));
+    // If `model` is actually a collection, its models will be mapped first.
+    var attrs = _.union(getAttributes(action), getAttributes(options));
+
+    if (_.isEmpty(data)) {
+      if (model instanceof Backbone.Model) {
+        data = model.pick(attrs);
+      } else {
+        data = model.map(function(child) {
+          return child.pick(attrs);
+        });
+      }
+    }
 
     options.data = _.isEmpty(data) ? null : data;
 
@@ -124,8 +137,6 @@
     // Try to normalise the options to reduce possible conflicts.
     options = _.omit(options, 'attrs', 'method');
 
-    if (_.isUndefined(options.parse)) options.parse = true;
-
     // Populate `attrs` option with the `data` option before deleting it to control what data is serialized when sent
     // to the server.
     if (options.data != null && (method === 'create' || method === 'update' || method === 'patch')) {
@@ -138,12 +149,23 @@
     var success = options.success;
 
     options.success = function(resp) {
-      // Ensure that the model's attributes are restored during synchronous actions.
-      model.attributes = attributes;
+      var method;
+      var serverAttrs;
 
-      var serverAttrs = model.parse(resp, options);
+      // Models should have response attributes applied and collections should either be set or reset depending on
+      // whether the `reset` option is enabled (which it is by default).
+      if (model instanceof Backbone.Model) {
+        // Ensure that the model's attributes are restored during synchronous actions.
+        model.attributes = attributes;
 
-      if (_.isObject(serverAttrs) && !model.set(serverAttrs, options)) return false;
+        serverAttrs = model.parse(resp, options);
+
+        if (_.isObject(serverAttrs) && !model.set(serverAttrs, options)) return false;
+      } else {
+        method = options.reset ? 'reset' : 'set';
+
+        model[method](resp, options);
+      }
 
       if (success) success(model, resp, options);
 
