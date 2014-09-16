@@ -126,7 +126,8 @@
 
     if (_.isUndefined(options.parse)) options.parse = true;
 
-    // TODO: comment
+    // Populate `attrs` option with the `data` option before deleting it to control what data is serialized when sent
+    // to the server.
     if (options.data != null && (method === 'create' || method === 'update' || method === 'patch')) {
       options.attrs = options.data;
 
