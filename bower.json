@@ -27,5 +27,17 @@
     "underscore": "~1.4.4",
     "backbone": "~1.0.0"
   },
-  "main": "backbone.do.min.js"
+  "main": "backbone.do.min.js",
+  "ignore": [
+    "**/.*",
+    "docs",
+    "test",
+    "AUTHORS.md",
+    "CHANGES.md",
+    "CONTRIBUTING.md",
+    "Gruntfile.js",
+    "README.md",
+    "bower.json",
+    "package.json"
+  ]
 }

@@ -1,0 +1,12 @@
+docs
+test
+.jshintrc
+.travis.yml
+AUTHORS.md
+CHANGES.md
+CONTRIBUTING.md
+Gruntfile.js
+README.md
+backbone.do.min.js
+backbone.do.min.map
+bower.json
