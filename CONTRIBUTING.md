@@ -1,60 +1,36 @@
 # Contributing
 
-Here are some guidelines that we'd like contributors to follow so that we can
-have a chance of keeping things right.
+If you have any questions about [Backbone.Do][0] please feel free to [raise an issue][2].
 
-## Getting Starting
+Please [search existing issues][1] for the same feature and/or issue before raising a new issue. Commenting on an
+existing issue is usually preferred over raising duplicate issues.
 
-* Make sure you have a [GitHub account](https://github.com/signup/free)
-* Submit a ticket for your issue if one does not already exist
-  * Clearly describe the issue including steps to reproduce when it is a bug
-  * Include the earliest version that you know has the issue
-* Fork the repository on GitHub
+Ensure that you update any relevant unit tests (in the `test` directory) and that all tests are currently passing. This
+can be done easily via command-line:
 
-## Making Changes
-
-* Create a topic branch from where you want to base your work
-  * This is usually the master branch
-  * Only target release branches if you are certain your fix must be on that
-    branch
-  * To quickly create a topic branch based on master; `git branch
-    fix/master/my_contribution master` then checkout the new branch with `git
-    checkout fix/master/my_contribution`
-  * Avoid working directly on the `master` branch
-* Make commits of logical units
-* Check for unnecessary whitespace with `git diff --check` before committing
-* Make sure your commit messages are in the proper format
+``` bash
+# install/update package dependencies
+$ npm install
+# run test suite
+$ grunt test
 ```
-    (#99999) Make the example in CONTRIBUTING imperative and concrete
 
-    Without this patch applied the example commit message in the CONTRIBUTING
-    document is not a concrete example.  This is a problem because the
-    contributor is left to imagine what the commit message should look like
-    based on a description rather than an example.  This patch fixes the
-    problem by making the example concrete and imperative.
+You will obviously need to have [Node.JS][3] for this, but you should also need to install (if you haven't done so
+already) the [Grunt][4] command-line tool:
 
-    The first line is a real life imperative statement with a ticket number
-    from our issue tracker.  The body describes the behavior without the patch,
-    why this is a problem, and how the patch fixes the problem when applied.
+``` bash
+$ npm install -g grunt-cli
 ```
-* Make sure you have added the necessary tests for your changes
-* Run *all* the tests to assure nothing else was accidentally broken
 
-## Submitting Changes
+Use the same coding style as the rest of the [code base][0].
 
-* Ensure you added your details to `AUTHORS.md` in the correct format
-```
-    * Joe Bloggs <joe.bloggs@example.com>
-```
-* Push your changes to a topic branch in your fork of the repository
-* Submit a pull request to neocotic's repository
-* Update your issue to mark that you have submitted code and are ready for it
-  to be reviewed
-  * Include a link to the pull request in the issue
+When submitting a pull request, please do *not* build the documentation or the minified files. We will built the
+distributables when cutting a release.
 
-# Additional Resources
+All pull requests should be made to the `develop` branch.
 
-* [Backbone.Do repository](https://github.com/neocotic/Backbone.Do)
-* [Issue tracker](https://github.com/neocotic/Backbone.Do/issues)
-* [General GitHub documentation](http://help.github.com)
-* [GitHub pull request documentation](http://help.github.com/send-pull-requests)
+[0]: https://github.com/neocotic/Backbone.Do
+[1]: https://github.com/neocotic/Backbone.Do/issues
+[2]: https://github.com/neocotic/Backbone.Do/issues/new
+[3]: http://nodejs.org
+[4]: http://gruntjs.com
