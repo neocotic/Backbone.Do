@@ -2,7 +2,11 @@ module.exports = function(grunt) {
 
   'use strict';
 
+  // Configuration
+  // -------------
+
   grunt.initConfig({
+
     pkg: grunt.file.readJSON('package.json'),
 
     connect: {
@@ -49,11 +53,14 @@ module.exports = function(grunt) {
         }
       },
       options: {
+        banner: (
+          '/*! Backbone.Do v<%= pkg.version %> | (c) <%= grunt.template.today("yyyy") %>' +
+          ' <%= pkg.author.name %> | <%= pkg.licenses[0].type %> License\n' +
+          '*/'
+        ),
+        report: 'min',
         sourceMap: true,
-        sourceMapName: '<%= pkg.name %>.min.map',
-        banner: '/*! Backbone.Do v<%= pkg.version %> | (c) ' +
-          '<%= grunt.template.today("yyyy") %> <%= pkg.author.name %> | ' +
-          '<%= pkg.licenses[0].type %> License */\n'
+        sourceMapName: '<%= pkg.name %>.min.map'
       }
     },
 
@@ -61,7 +68,11 @@ module.exports = function(grunt) {
       files: [ '<%= jshint.all %>' ],
       tasks: [ 'default' ]
     }
+
   });
+
+  // Tasks
+  // -----
 
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -70,8 +81,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-docco');
 
-  grunt.registerTask('build',   [ 'docco', 'uglify' ]);
-  grunt.registerTask('default', [ 'test', 'build' ]);
-  grunt.registerTask('test',    [ 'jshint', 'connect', 'qunit' ]);
+  grunt.registerTask('default', [ 'test' ]);
+  grunt.registerTask('dist', [ 'test', 'uglify', 'docco' ]);
+  grunt.registerTask('test', [ 'jshint', 'connect', 'qunit' ]);
 
 };
