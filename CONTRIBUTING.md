@@ -29,6 +29,8 @@ distributables when cutting a release.
 
 All pull requests should be made to the `develop` branch.
 
+Don't forget to add your details to the list of `AUTHORS.md` if you want your contribution to be recognized by others.
+
 [0]: https://github.com/neocotic/Backbone.Do
 [1]: https://github.com/neocotic/Backbone.Do/issues
 [2]: https://github.com/neocotic/Backbone.Do/issues/new
