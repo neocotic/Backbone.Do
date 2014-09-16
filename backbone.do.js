@@ -126,6 +126,13 @@
 
     if (_.isUndefined(options.parse)) options.parse = true;
 
+    // TODO: comment
+    if (options.data != null && (method === 'create' || method === 'update' || method === 'patch')) {
+      options.attrs = options.data;
+
+      delete options.data;
+    }
+
     // After a successful server-side action, the client is (optionally) updated with the server-side state.
     var success = options.success;
 
