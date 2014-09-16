@@ -5,6 +5,7 @@
   var ajax = Backbone.ajax;
   var sync = Backbone.sync;
   var defaultMethod = Backbone.Do.defaultMethod;
+  var parseName = Backbone.Do.parseName;
 
   QUnit.testStart(function() {
     var env = QUnit.config.current.testEnvironment;
@@ -35,6 +36,7 @@
     Backbone.ajax = ajax;
     Backbone.sync = sync;
     Backbone.Do.defaultMethod = defaultMethod;
+    Backbone.Do.parseName = parseName;
   });
 
 })();
