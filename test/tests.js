@@ -18,12 +18,12 @@
       doActionWithData: {
         data: { foo: 'bar' }
       },
-      doDelete:         { method: 'DELETE' },
-      doGet:            { method: 'GET'    },
-      doPatch:          { method: 'PATCH'  },
-      doPost:           { method: 'POST'   },
-      doPut:            { method: 'PUT'    },
-      doSomethingWeird: { method: 'WEIRD'  },
+      doCreate:         { method: 'create' },
+      doUpdate:         { method: 'update' },
+      doPatch:          { method: 'patch'  },
+      doDelete:         { method: 'delete' },
+      doRead:           { method: 'read'   },
+      doSomethingWeird: { method: 'weird'  },
       doComplexWithAttrs: {
         url: function() {
           return 'complex-attrs';
@@ -32,7 +32,7 @@
           return 'number string';
         },
         method: function() {
-          return 'PUT';
+          return 'update';
         }
       },
       doComplexWithData: {
@@ -43,7 +43,7 @@
           return { foo: 'bar' };
         },
         method: function() {
-          return 'POST';
+          return 'create';
         }
       }
     },
@@ -176,30 +176,32 @@
     });
   });
 
-  test('known configurations can be functions (excl. attrs)', 4, function() {
+  test('known configurations can be functions (excl. attrs)', 5, function() {
     doc.doComplexWithData();
 
     strictEqual(this.syncArgs.model, doc);
+    equal(this.syncArgs.method, 'create');
+    equal(this.ajaxSettings.data, JSON.stringify({ foo: 'bar' }));
     equal(this.ajaxSettings.type, 'POST');
     equal(this.ajaxSettings.url, '/test/test1/complex-data');
-    deepEqual(this.ajaxSettings.data, JSON.stringify({ foo: 'bar' }));
   });
 
-  test('known configurations can be functions (excl. data)', 4, function() {
+  test('known configurations can be functions (excl. data)', 5, function() {
     doc.doComplexWithAttrs();
 
     strictEqual(this.syncArgs.model, doc);
+    equal(this.syncArgs.method, 'update');
+    equal(this.ajaxSettings.data, JSON.stringify(doc.pick('number', 'string')));
     equal(this.ajaxSettings.type, 'PUT');
     equal(this.ajaxSettings.url, '/test/test1/complex-attrs');
-    deepEqual(this.ajaxSettings.data, JSON.stringify(doc.pick('number', 'string')));
   });
 
   test('actions can use a custom URL path', 4, function() {
     doc.doAction();
 
     strictEqual(this.syncArgs.model, doc);
-    equal(this.syncArgs.method, 'create');
-    equal(this.ajaxSettings.type, 'POST');
+    equal(this.syncArgs.method, 'update');
+    equal(this.ajaxSettings.type, 'PUT');
     equal(this.ajaxSettings.url, '/test/test1/action');
   });
 
@@ -208,8 +210,8 @@
     doc.doAction(null, { url: path });
 
     strictEqual(this.syncArgs.model, doc);
-    equal(this.syncArgs.method, 'create');
-    equal(this.ajaxSettings.type, 'POST');
+    equal(this.syncArgs.method, 'update');
+    equal(this.ajaxSettings.type, 'PUT');
     equal(this.ajaxSettings.url, '/test/test1/' + path);
   });
 
@@ -249,27 +251,21 @@
     equal(this.ajaxSettings.data, JSON.stringify(data));
   });
 
-  test('data can be sent', 2, function() {
+  test('data can be sent', 3, function() {
     doc.doActionWithData();
 
     strictEqual(this.syncArgs.model, doc);
+    equal(this.ajaxSettings.contentType, 'application/json');
     equal(this.ajaxSettings.data, JSON.stringify({ foo: 'bar' }));
   });
 
-  test('merge data to be sent', 2, function() {
+  test('merge data to be sent', 3, function() {
     var data = { fu: 'baz' };
     doc.doActionWithData(data);
 
     strictEqual(this.syncArgs.model, doc);
+    equal(this.ajaxSettings.contentType, 'application/json');
     equal(this.ajaxSettings.data, JSON.stringify(_.extend({ foo: 'bar' }, data)));
-  });
-
-  test('data is not stringified for GET methods', 2, function() {
-    var data = { foo: 'bar' };
-    doc.doGet(data);
-
-    strictEqual(this.syncArgs.model, doc);
-    deepEqual(this.ajaxSettings.data, data);
   });
 
   test('content type is correct', 2, function() {
@@ -277,24 +273,6 @@
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.ajaxSettings.contentType, 'application/json');
-  });
-
-  test('JSON can be emulated', 3, function() {
-    doc.doActionWithData(null, { emulateJSON: true });
-
-    strictEqual(this.syncArgs.model, doc);
-    equal(this.ajaxSettings.contentType, 'application/x-www-form-urlencoded');
-    deepEqual(this.ajaxSettings.data, { data: JSON.stringify({ foo: 'bar' }) });
-  });
-
-  test('HTTP methods can be emulated', 4, function() {
-    var data = { foo: 'bar' };
-    doc.doPut(data, { emulateHTTP: true, emulateJSON: true });
-
-    strictEqual(this.syncArgs.model, doc);
-    equal(this.ajaxSettings.contentType, 'application/x-www-form-urlencoded');
-    deepEqual(this.ajaxSettings.data, { data: JSON.stringify(data), _method: 'PUT' });
-    deepEqual(this.ajaxSettings.type, 'POST');
   });
 
   test('validate before set', 2, function() {
@@ -368,67 +346,68 @@
     doc.doAnything();
   });
 
-  test('DELETE is a valid method action', 4, function() {
-    doc.doDelete();
+  test('delete is a valid method action and data is not stringified', 5, function() {
+    var data = { foo: 'bar' };
+    doc.doDelete(data);
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.syncArgs.method, 'delete');
+    deepEqual(this.ajaxSettings.data, data);
     equal(this.ajaxSettings.type, 'DELETE');
     equal(this.ajaxSettings.url, '/test/test1/doDelete');
   });
 
-  test('GET is a valid method action', 4, function() {
-    doc.doGet();
+  test('read is a valid method action and data is not stringified', 5, function() {
+    var data = { foo: 'bar' };
+    doc.doRead(data);
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.syncArgs.method, 'read');
+    deepEqual(this.ajaxSettings.data, data);
     equal(this.ajaxSettings.type, 'GET');
-    equal(this.ajaxSettings.url, '/test/test1/doGet');
+    equal(this.ajaxSettings.url, '/test/test1/doRead');
   });
 
-  test('PATCH is a valid method action', 4, function() {
-    doc.doPatch();
+  test('patch is a valid method action and data is stringified', 5, function() {
+    var data = { foo: 'bar' };
+    doc.doPatch(data);
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.syncArgs.method, 'patch');
+    equal(this.ajaxSettings.data, JSON.stringify(data));
     equal(this.ajaxSettings.type, 'PATCH');
     equal(this.ajaxSettings.url, '/test/test1/doPatch');
   });
 
-  test('POST is a valid method action', 4, function() {
-    doc.doPost();
+  test('create is a valid method action and data is stringified', 5, function() {
+    var data = { foo: 'bar' };
+    doc.doCreate(data);
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.syncArgs.method, 'create');
+    equal(this.ajaxSettings.data, JSON.stringify(data));
     equal(this.ajaxSettings.type, 'POST');
-    equal(this.ajaxSettings.url, '/test/test1/doPost');
+    equal(this.ajaxSettings.url, '/test/test1/doCreate');
   });
 
-  test('POST is used as default action if none was specified', 4, function() {
+  test('update is a valid method action and data is stringified', 5, function() {
+    var data = { foo: 'bar' };
+    doc.doUpdate(data);
+
+    strictEqual(this.syncArgs.model, doc);
+    equal(this.syncArgs.method, 'update');
+    equal(this.ajaxSettings.data, JSON.stringify(data));
+    equal(this.ajaxSettings.type, 'PUT');
+    equal(this.ajaxSettings.url, '/test/test1/doUpdate');
+  });
+
+  test('update is used as default action if none was specified', 4, function() {
     doc.doAnything();
-
-    strictEqual(this.syncArgs.model, doc);
-    equal(this.syncArgs.method, 'create');
-    equal(this.ajaxSettings.type, 'POST');
-    equal(this.ajaxSettings.url, '/test/test1/doAnything');
-  });
-
-  test('POST is used as default action if invalid method was specified', 4, function() {
-    doc.doSomethingWeird();
-
-    strictEqual(this.syncArgs.model, doc);
-    equal(this.syncArgs.method, 'create');
-    equal(this.ajaxSettings.type, 'POST');
-    equal(this.ajaxSettings.url, '/test/test1/doSomethingWeird');
-  });
-
-  test('PUT is a valid method action', 4, function() {
-    doc.doPut();
 
     strictEqual(this.syncArgs.model, doc);
     equal(this.syncArgs.method, 'update');
     equal(this.ajaxSettings.type, 'PUT');
-    equal(this.ajaxSettings.url, '/test/test1/doPut');
+    equal(this.ajaxSettings.url, '/test/test1/doAnything');
   });
 
 })();

@@ -39,14 +39,15 @@ var Book = Backbone.Model.extend({
   actions: {
     buy: {
       data: {
-        referrer: 'Amazon'
+        referrer: 'Amazon',
+        method:   'create'
       }
     },
 
     getPages: {
       url:    'pages',
       attrs:  'pageCount',
-      method: 'GET'
+      method: 'read'
     }
   },
 
@@ -125,7 +126,8 @@ var Book = Backbone.Model.extend({
     // ...
 
     findRelated: {
-      attrs: 'author genre keywords'
+      attrs:  'author genre keywords',
+      method: 'read'
     }
   },
 
@@ -168,14 +170,14 @@ var Book = Backbone.Model.extend({
 
 Type(s): `String`
 
-The HTTP method to be used in the request that is sent to the server. By default this is the value of
-[defaultMethod](#defaultmethod). This can be any of the following methods;
+The CRUD method to be passed to [Backbone.sync][]. By default this is the value of [defaultMethod](#defaultmethod).
+This can be any of the following methods;
 
-- `DELETE`
-- `GET`
-- `PATCH`
-- `POST`
-- `PUT`
+- `create`
+- `update`
+- `patch`
+- `delete`
+- `read`
 
 #### `url`
 
@@ -189,11 +191,11 @@ action's name.
 
 #### `defaultMethod`
 
-The default HTTP method used by requests that don't specify one. This can be any of the same values for the
-[method](#method) configuration but, by default, is `POST`.
+The default CRUD method used internally by Backbone. This can be any of the same values for the [method](#method)
+configuration but, by default, is `update`.
 
 ``` javascript
-Backbone.Do.defaultMethod = 'PUT';
+Backbone.Do.defaultMethod = 'update';
 ```
 
 #### `parseName(name)`
