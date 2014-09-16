@@ -49,7 +49,7 @@
   Do.defaultMethod = 'update';
 
   // Current version of the `Do` plugin.
-  Do.VERSION = '0.1.4';
+  Do.VERSION = '1.0.0';
 
   // Helpers
   // -------

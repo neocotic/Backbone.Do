@@ -15,7 +15,7 @@ $ npm install
 $ grunt test
 ```
 
-You will obviously need to have [Node.JS][3] for this, but you should also need to install (if you haven't done so
+You will obviously need to have [node.js][3] for this, but you should also need to install (if you haven't done so
 already) the [Grunt][4] command-line tool:
 
 ``` bash

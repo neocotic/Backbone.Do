@@ -27,6 +27,9 @@ Obviously, this plugin depends on [Backbone][1] along with its dependencies.
 
 ## API
 
+The API supports both Backbone collections *and* models. The main difference what data is sent to the server when
+selected model attributes are sent and how the server response is handled.
+
 ### Actions
 
 Giving your model actions is as simple as adding a new hash and calling this plugin in your model's `initialize`
@@ -114,7 +117,8 @@ whose result is also used as their return value.
 
 Type(s): `String` `String[]`
 
-A subset of attributes to be picked from the model and sent to the server.
+A subset of attributes to be picked from the model and sent to the server. If used on a collection, this is done for
+each child model of the collection and then that mapping is sent to the server.
 
 **Note:** If the `data` configuration is used, this will be ignored.
 

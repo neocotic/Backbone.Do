@@ -82,7 +82,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-docco');
 
   grunt.registerTask('default', [ 'test' ]);
-  grunt.registerTask('build', [ 'test', 'uglify', 'docco' ]);
+  grunt.registerTask('dist', [ 'test', 'uglify', 'docco' ]);
   grunt.registerTask('test', [ 'jshint', 'connect', 'qunit' ]);
 
 };
