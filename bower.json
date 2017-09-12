@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Backbone plugin to make model actions doable",
   "homepage": "http://neocotic.com/Backbone.Do",
-  "bugs": {
-    "url": "https://github.com/neocotic/Backbone.Do/issues"
-  },
   "authors": [
     {
       "name": "Alasdair Mercer",
@@ -21,7 +18,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/neocotic/Backbone.Do.git"
+    "url": "https://github.com/neocotic/Backbone.Do.git"
   },
   "dependencies": {
     "underscore": "^1.5.0",
@@ -29,15 +26,15 @@
   },
   "main": "backbone.do.min.js",
   "ignore": [
-    "**/.*",
-    "docs",
-    "test",
+    "docs/",
+    "test/",
+    ".*",
     "AUTHORS.md",
     "CHANGES.md",
     "CONTRIBUTING.md",
     "Gruntfile.js",
-    "README.md",
-    "bower.json",
-    "package.json"
+    "package.json",
+    "package-lock.json",
+    "README.md"
   ]
 }
