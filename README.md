@@ -1,29 +1,44 @@
-     ____                     __      __                                  ____
-    /\  _`\                  /\ \    /\ \                                /\  _`\
-    \ \ \L\ \     __      ___\ \ \/'\\ \ \____    ___     ___      __    \ \ \/\ \    ___
-     \ \  _ <'  /'__`\   /'___\ \ , < \ \ '__`\  / __`\ /' _ `\  /'__`\   \ \ \ \ \  / __`\
-      \ \ \L\ \/\ \L\.\_/\ \__/\ \ \\`\\ \ \L\ \/\ \L\ \/\ \/\ \/\  __/  __\ \ \_\ \/\ \L\ \
-       \ \____/\ \__/.\_\ \____\\ \_\ \_\ \_,__/\ \____/\ \_\ \_\ \____\/\_\\ \____/\ \____/
-        \/___/  \/__/\/_/\/____/ \/_/\/_/\/___/  \/___/  \/_/\/_/\/____/\/_/ \/___/  \/___/
+    888888b.                     888      888                                    8888888b.
+    888  "88b                    888      888                                    888  "Y88b
+    888  .88P                    888      888                                    888    888
+    8888888K.   8888b.   .d8888b 888  888 88888b.   .d88b.  88888b.   .d88b.     888    888  .d88b.
+    888  "Y88b     "88b d88P"    888 .88P 888 "88b d88""88b 888 "88b d8P  Y8b    888    888 d88""88b
+    888    888 .d888888 888      888888K  888  888 888  888 888  888 88888888    888    888 888  888
+    888   d88P 888  888 Y88b.    888 "88b 888 d88P Y88..88P 888  888 Y8b.    d8b 888  .d88P Y88..88P
+    8888888P"  "Y888888  "Y8888P 888  888 88888P"   "Y88P"  888  888  "Y8888 Y8P 8888888P"   "Y88P"
 
-[Backbone.Do][0] is a plugin to make model actions doable.
+[Backbone.Do](https://github.com/neocotic/Backbone.Do) is a [Backbone](http://backbonejs.org) plugin that makes model
+actions doable.
 
-[![Build Status](https://travis-ci.org/neocotic/Backbone.Do.svg?branch=develop)][4]
+[![Build Status](https://img.shields.io/travis/neocotic/Backbone.Do/develop.svg?style=flat-square)](https://travis-ci.org/neocotic/Backbone.Do)
+[![Dependency Status](https://img.shields.io/david/neocotic/Backbone.Do.svg?style=flat-square)](https://david-dm.org/neocotic/Backbone.Do)
+[![Dev Dependency Status](https://img.shields.io/david/dev/neocotic/Backbone.Do.svg?style=flat-square)](https://david-dm.org/neocotic/Backbone.Do?type=dev)
+[![License](https://img.shields.io/npm/l/backbone.do.svg?style=flat-square)](https://github.com/neocotic/Backbone.Do/blob/master/LICENSE.md)
+[![Release](https://img.shields.io/npm/v/backbone.do.svg?style=flat-square)](https://www.npmjs.com/package/backbone.do)
 
-It can be used normally in any browser as well as in the [node.js][6] environment.
+* [Install](#install)
+* [API](#api)
+* [Bugs](#bugs)
+* [Contributors](#contributors)
+* [License](#license)
 
 ## Install
 
 Install using the package manager for your desired environment(s):
 
 ``` bash
-# for node.js:
-$ npm install backbone.do
-# OR; for the browser:
-$ bower install backbone.do
+$ npm install --save backbone.do
+# OR:
+$ bower install --save backbone.do
 ```
 
-Obviously, this plugin depends on [Backbone][1] along with its dependencies.
+You will also need to ensure that you have [Backbone](http://backbonejs.org) and [Underscore](http://underscorejs.org)
+installed.
+
+If you want to simply download the file to be used in the browser you can find them below:
+
+* [Development Version](https://cdn.rawgit.com/neocotic/Backbone.Do/master/lib/backbone.do.js) (7kb)
+* [Production Version](https://cdn.rawgit.com/neocotic/Backbone.Do/master/dist/backbone.do.min.js) (1.9kb - [Source Map](https://cdn.rawgit.com/neocotic/Backbone.Do/master/dist/backbone.do.min.map))
 
 ## API
 
@@ -82,8 +97,8 @@ If the server returns an attribute hash, those values will then be applied to th
 following requests would have been sent to the server:
 
 ```
-POST http://example.com/books/hobbit/buy
-GET  http://example.com/books/hobbit/pages?pageCount=310
+POST https://example.com/books/hobbit/buy
+GET  https://example.com/books/hobbit/pages?pageCount=310
 ```
 
 The first request would have been sent the JSON-formatted data in the request body.
@@ -109,9 +124,10 @@ There's a lot of ways in which actions can be declared so let's go over the diff
 configuration can also be a function that returns the value to be used and all are entirely optional. Even the whole
 action can be a function that returns the configuration hash.
 
-Any other undocumented configurations will simply be passed along to [Backbone.sync][2] and, eventually,
-[Backbone.ajax][3] as options. Action functions also support the same asynchronous patterns as [Backbone.ajax][3],
-whose result is also used as their return value.
+Any other undocumented configurations will simply be passed along to [Backbone.sync](http://backbonejs.org/#Sync) and,
+eventually, [Backbone.ajax](http://backbonejs.org/#Sync-ajax) as options. Action functions also support the same
+asynchronous patterns as [Backbone.ajax](http://backbonejs.org/#Sync-ajax), whose result is also used as their return
+value.
 
 #### `attrs`
 
@@ -174,8 +190,8 @@ var Book = Backbone.Model.extend({
 
 Type(s): `String`
 
-The CRUD method to be passed to [Backbone.sync][2]. By default this is the value of [defaultMethod](#defaultmethod).
-This can be any of the following methods;
+The CRUD method to be passed to [Backbone.sync]http://backbonejs.org/#Sync. By default this is the value of
+[defaultMethod](#defaultmethod). This can be any of the following methods;
 
 - `create`
 - `update`
@@ -235,27 +251,21 @@ Two different events will be trigger by this plugin:
 
 ## Bugs
 
-If you have any problems with this library or would like to see the changes currently in development you can do so
-here;
+If you have any problems with Backbone.Do or would like to see changes currently in development you can do so
+[here](https://github.com/neocotic/Backbone.Do/issues).
 
-https://github.com/neocotic/Backbone.Do/issues
+## Contributors
 
-See the `CONTRIBUTING.md` document for more details.
+If you want to contribute, you're a legend! Information on how you can do so can be found in
+[CONTRIBUTING.md](https://github.com/neocotic/Backbone.Do/blob/master/CONTRIBUTING.md). We want your suggestions and
+pull requests!
 
-## Questions?
+A list of Backbone.Do contributors can be found in
+[AUTHORS.md](https://github.com/neocotic/Backbone.Do/blob/master/AUTHORS.md).
 
-Take a look at `lib/backbone.do.js` to get a better understanding of what the code is doing.
+## License
 
-If that doesn't help, feel free to follow me on Twitter, [@neocotic][5].
+Copyright © 2017 Alasdair Mercer
 
-However, if you want more information or examples of using this library please visit the project's homepage;
-
-https://github.com/neocotic/Backbone.Do
-
-[0]: https://github.com/neocotic/Backbone.Do
-[1]: http://backbonejs.org
-[2]: http://backbonejs.org/#Sync
-[3]: http://backbonejs.org/#Sync-ajax
-[4]: https://travis-ci.org/neocotic/Backbone.Do
-[5]: https://twitter.com/neocotic
-[6]: http://nodejs.org
+See [LICENSE.md](https://github.com/neocotic/Backbone.Do/blob/master/LICENSE.md) for more information on our MIT
+license.
