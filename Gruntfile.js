@@ -46,8 +46,7 @@ module.exports = function(grunt) {
       options: {
         banner: (
           '/*! Backbone.Do v<%= pkg.version %> | (c) <%= grunt.template.today("yyyy") %>' +
-          ' <%= pkg.author.name %> | <%= pkg.licenses[0].type %> License\n' +
-          '*/'
+          ' <%= pkg.author.name %> | <%= pkg.license %> License */'
         ),
         report: 'min',
         sourceMap: true,
@@ -65,11 +64,7 @@ module.exports = function(grunt) {
   // Tasks
   // -----
 
-  grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-qunit');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-watch');
+  require('load-grunt-tasks')(grunt);
 
   grunt.registerTask('default', [ 'ci' ]);
   grunt.registerTask('build', [ 'jshint', 'uglify' ]);
