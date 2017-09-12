@@ -1,4 +1,4 @@
-// [Backbone.Do](http://neocotic.com/Backbone.Do)
+// [Backbone.Do](https://github.com/neocotic/Backbone.Do)
 //
 // Copyright (c) 2014 Alasdair Mercer
 //

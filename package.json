@@ -2,14 +2,14 @@
   "name": "backbone.do",
   "version": "1.0.0",
   "description": "Backbone plugin to make model actions doable",
-  "homepage": "http://neocotic.com/Backbone.Do",
+  "homepage": "https://github.com/neocotic/Backbone.Do",
   "bugs": {
     "url": "https://github.com/neocotic/Backbone.Do/issues"
   },
   "author": {
     "name": "Alasdair Mercer",
     "email": "mercer.alasdair@gmail.com",
-    "url": "http://neocotic.com"
+    "url": "https://neocotic.com"
   },
   "license": "MIT",
   "keywords": [
@@ -32,7 +32,6 @@
     "grunt-contrib-qunit": "^0.5.2",
     "grunt-contrib-uglify": "^0.5.1",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-docco": "^0.3.3",
     "qunitjs": "^1.15.0"
   },
   "main": "backbone.do.js",

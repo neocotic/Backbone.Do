@@ -18,15 +18,6 @@ module.exports = function(grunt) {
       }
     },
 
-    docco: {
-      all: {
-        options: {
-          output: 'docs'
-        },
-        src: [ '<%= pkg.name %>.js' ]
-      }
-    },
-
     jshint: {
       all: [
         'Gruntfile.js',
@@ -79,10 +70,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-docco');
 
-  grunt.registerTask('default', [ 'test' ]);
-  grunt.registerTask('build', [ 'jshint', 'uglify', 'docco' ]);
+  grunt.registerTask('default', [ 'ci' ]);
+  grunt.registerTask('build', [ 'jshint', 'uglify' ]);
   grunt.registerTask('ci', [ 'jshint', 'uglify', 'connect', 'qunit' ]);
   grunt.registerTask('test', [ 'jshint', 'connect', 'qunit' ]);
 

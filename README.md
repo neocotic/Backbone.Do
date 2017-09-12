@@ -244,15 +244,15 @@ See the `CONTRIBUTING.md` document for more details.
 
 ## Questions?
 
-Take a look at `docs/backbone.do.html` to get a better understanding of what the code is doing.
+Take a look at `backbone.do.js` to get a better understanding of what the code is doing.
 
 If that doesn't help, feel free to follow me on Twitter, [@neocotic][5].
 
 However, if you want more information or examples of using this library please visit the project's homepage;
 
-http://neocotic.com/Backbone.Do
+https://github.com/neocotic/Backbone.Do
 
-[0]: http://neocotic.com/Backbone.Do
+[0]: https://github.com/neocotic/Backbone.Do
 [1]: http://backbonejs.org
 [2]: http://backbonejs.org/#Sync
 [3]: http://backbonejs.org/#Sync-ajax
