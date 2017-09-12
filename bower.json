@@ -24,7 +24,7 @@
     "backbone": ">=1.0.0",
     "underscore": ">=1.4.3"
   },
-  "main": "backbone.do.min.js",
+  "main": "lib/backbone.do.js",
   "ignore": [
     "test/",
     ".*",

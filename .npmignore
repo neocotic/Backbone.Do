@@ -1,8 +1,7 @@
+dist/
 test/
 .*
 AUTHORS.md
-backbone.do.min.js
-backbone.do.min.map
 bower.json
 CHANGES.md
 CONTRIBUTING.md

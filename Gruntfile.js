@@ -6,8 +6,11 @@ module.exports = function(grunt) {
   // -------------
 
   grunt.initConfig({
-
     pkg: grunt.file.readJSON('package.json'),
+
+    clean: {
+      build: [ 'dist/**' ]
+    },
 
     connect: {
       server: {
@@ -20,9 +23,9 @@ module.exports = function(grunt) {
 
     jshint: {
       all: [
-        'Gruntfile.js',
-        '<%= pkg.name %>.js',
-        'test/*.js'
+        'lib/*.js',
+        'test/*.js',
+        'Gruntfile.js'
       ],
       options: {
         jshintrc: '.jshintrc'
@@ -40,7 +43,7 @@ module.exports = function(grunt) {
     uglify: {
       all: {
         files: {
-          '<%= pkg.name %>.min.js': '<%= pkg.name %>.js'
+          'dist/backbone.do.min.js': 'lib/backbone.do.js'
         }
       },
       options: {
@@ -50,10 +53,9 @@ module.exports = function(grunt) {
         ),
         report: 'min',
         sourceMap: true,
-        sourceMapName: '<%= pkg.name %>.min.map'
+        sourceMapName: 'dist/backbone.do.min.map'
       }
     }
-
   });
 
   // Tasks
@@ -62,8 +64,8 @@ module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
 
   grunt.registerTask('default', [ 'ci' ]);
-  grunt.registerTask('build', [ 'jshint', 'uglify' ]);
-  grunt.registerTask('ci', [ 'jshint', 'uglify', 'connect', 'qunit' ]);
+  grunt.registerTask('build', [ 'jshint', 'clean:build', 'uglify' ]);
+  grunt.registerTask('ci', [ 'jshint', 'clean', 'uglify', 'connect', 'qunit' ]);
   grunt.registerTask('test', [ 'jshint', 'connect', 'qunit' ]);
 
 };

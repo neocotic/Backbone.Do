@@ -244,7 +244,7 @@ See the `CONTRIBUTING.md` document for more details.
 
 ## Questions?
 
-Take a look at `backbone.do.js` to get a better understanding of what the code is doing.
+Take a look at `lib/backbone.do.js` to get a better understanding of what the code is doing.
 
 If that doesn't help, feel free to follow me on Twitter, [@neocotic][5].
 
