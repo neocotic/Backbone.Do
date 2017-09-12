@@ -1,38 +1,26 @@
 # Contributing
 
-If you have any questions about [Backbone.Do][0] please feel free to [raise an issue][2].
+If you have any questions about [Backbone.Do](https://github.com/neocotic/Backbone.Do) please feel free to
+[raise an issue](https://github.com/neocotic/Backbone.Do/issues/new).
 
-Please [search existing issues][1] for the same feature and/or issue before raising a new issue. Commenting on an
-existing issue is usually preferred over raising duplicate issues.
+Please [search existing issues](https://github.com/neocotic/Backbone.Do/issues) for the same feature and/or issue before
+raising a new issue. Commenting on an existing issue is usually preferred over raising duplicate issues.
 
-Ensure that you update any relevant unit tests (in the `test` directory) and that all tests are currently passing. This
-can be done easily via command-line:
+Please ensure that all files conform to the coding standards, using the same coding style as the rest of the code base.
+All unit tests should be updated and passing as well. All of this can easily be checked via command-line:
 
 ``` bash
 # install/update package dependencies
 $ npm install
-# run test suite
-$ grunt test
+# run build & test suite
+$ npm run ci
 ```
 
-You will obviously need to have [node.js][3] for this, but you should also need to install (if you haven't done so
-already) the [Grunt][4] command-line tool:
-
-``` bash
-$ npm install -g grunt-cli
-```
-
-Use the same coding style as the rest of the [code base][0].
-
-When submitting a pull request, please do *not* build the documentation or the minified files. We will built the
-distributables when cutting a release.
+You must have at least [Node.js](https://nodejs.org) version 4 or newer and [npm](https://npmjs.com) version 5 or newer
+installed.
 
 All pull requests should be made to the `develop` branch.
 
-Don't forget to add your details to the list of `AUTHORS.md` if you want your contribution to be recognized by others.
-
-[0]: https://github.com/neocotic/Backbone.Do
-[1]: https://github.com/neocotic/Backbone.Do/issues
-[2]: https://github.com/neocotic/Backbone.Do/issues/new
-[3]: http://nodejs.org
-[4]: http://gruntjs.com
+Don't forget to add your details to the list of
+[AUTHORS.md](https://github.com/neocotic/Backbone.Do/blob/master/AUTHORS.md) if you want your contribution to be
+recognized by others.
