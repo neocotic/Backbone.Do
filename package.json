@@ -1,6 +1,6 @@
 {
   "name": "backbone.do",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Backbone plugin to make model actions doable",
   "homepage": "https://github.com/neocotic/Backbone.Do",
   "bugs": {
