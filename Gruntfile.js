@@ -52,11 +52,6 @@ module.exports = function(grunt) {
         sourceMap: true,
         sourceMapName: '<%= pkg.name %>.min.map'
       }
-    },
-
-    watch: {
-      files: [ '<%= jshint.all %>' ],
-      tasks: [ 'default' ]
     }
 
   });
