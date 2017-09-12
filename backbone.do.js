@@ -4,30 +4,30 @@
 //
 // Freely distributable under the MIT license
 
-(function(root, factory) {
+(function(global, factory) {
 
   'use strict';
 
-  if (typeof exports === 'object') {
+  if (typeof exports === 'object' && typeof module !== 'undefined') {
     // Export module for Node.js (or similar) environments.
-    module.exports = factory(require('underscore'), require('backbone'), root);
+    module.exports = factory(require('underscore'), require('backbone'), global);
   } else if (typeof define === 'function' && define.amd) {
     // Register as an anonymous module.
     define([ 'underscore', 'backbone' ], function(_, Backbone) {
-        return factory(_, Backbone, root);
+      return factory(_, Backbone, global);
     });
   } else {
     // Fallback on a simple global variable (e.g. browsers).
-    factory(root._, root.Backbone, root);
+    factory(global._, global.Backbone, global);
   }
 
-}(this, function(_, Backbone, root) {
+}(this, function(_, Backbone, global) {
 
   'use strict';
 
   // Try our best to ensure Backbone and Underscore are available.
-  _ = _ === void 0 ? root._ : _;
-  Backbone = Backbone === void 0 ? root.Backbone : Backbone;
+  _ = _ === void 0 ? global._ : _;
+  Backbone = Backbone === void 0 ? global.Backbone : Backbone;
 
   // Setup
   // -----
